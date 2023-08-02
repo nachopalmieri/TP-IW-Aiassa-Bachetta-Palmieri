@@ -1,4 +1,4 @@
-# TP Ing. Web 2023
+# TP Ing. Web 2023 | Grupo 2
 ## Integrantes
 - Aiassa, Alejandro
 - Bachetta, Juan Ignacio
