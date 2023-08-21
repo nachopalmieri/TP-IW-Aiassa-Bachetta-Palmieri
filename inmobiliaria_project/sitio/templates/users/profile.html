@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<html>
+  {%include "nav.html"%}
+  <head>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+  </head>
+  <body>
+    <div class="mt-1">
+    {% if user.is_authenticated %}
+      Tu perfil: {{ user.username }}!
+    {% endif %}
+    </div>
+  </body>
+</html>
+
+{% endblock content %}

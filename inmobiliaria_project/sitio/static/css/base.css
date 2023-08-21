@@ -124,6 +124,11 @@ nav {
 .mt-1{
     color: var(--white);
 }
+.logo img {
+    width: 200; /* Ajusta el ancho del logo según tus necesidades */
+    height: auto; /* Esto mantiene la proporción original del logo */
+  }
+
 a{
     color: var(--green);
 }

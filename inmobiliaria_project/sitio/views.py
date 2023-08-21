@@ -3,10 +3,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import AuthenticationForm
 from .models import *
 from .forms import RegistroForm, InicioSesionForm 
+
 
 
 
@@ -68,8 +70,18 @@ def ContactoView(request):
     return render(request, 'contacto.html', context)
 
 def HomeView(request):
-    context = {}
+    context = {
+        'publicaciones': Publicacion.objects.all()
+    }
     return render(request, 'home.html', context)
+
+@login_required
+def PerfilView(request):
+    return render(request,'users/profile.html')
+
+@login_required
+def PublicarView(request):
+    return render(request,'publicacion.html')
 
 #Vista con lo que se muestra en el mail de restauracion de contraseña
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
