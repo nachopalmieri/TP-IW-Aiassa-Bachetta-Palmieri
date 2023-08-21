@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import config
+#from decouple import config
 #import django_heroku
 from django.contrib.messages import constants as messages
 
@@ -155,8 +155,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = 'foroingweb@gmail.com'
+EMAIL_HOST_PASSWORD = 'ovvytrqrgadwkpcu'
+#EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+#EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'profile',
