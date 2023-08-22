@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-c9xch(id+xiyp4(hev%uqk&e8)buexnqztza5de6w7zdx#pkwl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://tulugar.onrender.com']
+ALLOWED_HOSTS = ['tulugar.onrender.com']
 
 
 # Application definition
