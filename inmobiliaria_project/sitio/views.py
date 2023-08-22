@@ -61,9 +61,10 @@ def LoginView(request):
     return render(request, 'users/registration/login.html', context)
 
 #Vistas para el logout de usuarios
-def LogoutView(request):
-    context = {}
-    return render(request, 'users/registration/logout.html', context)
+# def LogoutView(request):
+#     context = {}
+#     return render(request, 'users/registration/logout.html', context)
+
 
 def ContactoView(request):
     context = {}
