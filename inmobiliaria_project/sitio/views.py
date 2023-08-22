@@ -89,4 +89,18 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     email_template_name = 'users/reset_password/password_reset_email.html'
     subject_template_name = 'users/reset_password/password_reset_subject.txt'
 
+class CustomPasswordResetView(PasswordResetView):
+
+    template_name = 'users/reset_password/password_reset.html'
+    email_template_name = 'users/reset_password/password_reset_email.html'
+    subject_template_name = 'users/reset_password/password_reset_subject.txt'
+
+    protocol = 'https'  # Cambia esto según tu configuración
+    domain = 'tulugar.onrender.com'  # Cambia esto a tu dominio real
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['protocol'] = self.protocol
+        context['domain'] = self.domain
+        return context
+
     
