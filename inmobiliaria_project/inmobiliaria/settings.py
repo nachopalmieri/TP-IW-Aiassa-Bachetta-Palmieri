@@ -143,7 +143,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 5
+SITE_ID = 5 #Dejar este para el deploy
+#SITE_ID = 2 #Cambiar a este cuando estemos en local
 LOGIN_REDIRECT_URL = 'home'
 #LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
