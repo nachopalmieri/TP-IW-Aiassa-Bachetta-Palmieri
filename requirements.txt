@@ -13,7 +13,7 @@ crispy-bootstrap5==0.7
 cryptography==41.0.3
 defusedxml==0.7.1
 dj-database-url==2.0.0
-Django==4.1.6
+Django==4.2.4
 django-allauth==0.52.0
 django-ckeditor==6.7.0
 django-cleanup==8.0.0
@@ -52,6 +52,7 @@ platformdirs==3.10.0
 posthog==3.0.2
 prompthub-py==4.0.0
 psycopg2==2.9.7
+psycopg2-binary==2.9.7
 pycparser==2.21
 pydantic==1.10.12
 PyJWT==2.8.0
@@ -85,4 +86,5 @@ typing-extensions==4.7.1
 tzdata==2023.3
 url-normalize==1.4.3
 urllib3==2.0.4
+whitenoise[brotli]==6.5.0
 
