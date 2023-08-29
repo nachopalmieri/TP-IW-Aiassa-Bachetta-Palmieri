@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "nav.html" %}
+{% include "alerts.html" %}
+<div class="container">
+  {% for publicacion in publicaciones %}
+    <article class="media content-section">
+      <img class="rounded-circle article-img" src="{{ publicacion.autor.profile.image.url }}">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="#">{{ publicacion.autor }}</a>
+          <small class="text-muted">{{ publicacion.fecha_creacion|date:"F d, Y" }}</small>
+        </div>
+        <h2><a class="article-title" href="{% url 'post-detail' publicacion.id %}">{{ publicacion.titulo }}</a></h2>
+        <p class="article-content">{{ publicacion.descripcion }}</p>
+        
+        <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image">
+
+        <p>Tipo de Propiedad: {{ publicacion.get_tipo_propiedad_display }}</p>
+        <p>Precio: {{ publicacion.precio }}</p>
+        <p>Habitaciones: {{ publicacion.habitaciones }}</p>
+        <p>Baños: {{ publicacion.banos }}</p>
+        <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
+        <p>Ubicación: {{ publicacion.ubicacion }}</p>
+
+      </div>
+    </article>
+  {% endfor %}
+</div>
+{% endblock content %}
+
+
+

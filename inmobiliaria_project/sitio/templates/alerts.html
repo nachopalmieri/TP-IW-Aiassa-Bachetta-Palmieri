@@ -1,0 +1,16 @@
+{% if messages %}
+  {% for message in messages %}
+    <div class="container-fluid mx-0 p-0 sticky-top">
+      <div class="alert {{ message.tags }} alert-dismissable fade show" role="alert">
+        {{ message }}
+      </div>
+    </div>
+  {% endfor %}
+  <script>
+    $(document).ready(function() {
+      $(".alert").delay(2000).slideUp(200, function() {
+        $(this).alert('close');
+      });
+    });
+  </script>
+{% endif %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "nav.html" %}
+{% include "alerts.html" %}
+<div class="container">
+    <article class="media content-section">
+      <img class="rounded-circle article-img" src="{{ object.autor.profile.image.url }}">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="#">{{ object.autor }}</a>
+          <small class="text-muted">{{ object.fecha_creacion|date:"F d, Y" }}</small>
+        </div>
+        <h2 class="article-title"> {{ object.titulo }} </h2>
+        <p class="article-content">{{ object.descripcion }}</p>
+        
+        <img src="{{ object.imagen_principal.url }}" alt="{{ object.titulo }}" class="publicacion-image">
+
+        <p>Tipo de Propiedad: {{ object.get_tipo_propiedad_display }}</p>
+        <p>Precio: {{ object.precio }}</p>
+        <p>Habitaciones: {{ object.habitaciones }}</p>
+        <p>Baños: {{ object.banos }}</p>
+        <p>Metros Cuadrados: {{ object.metros_cuadrados }}</p>
+        <p>Ubicación: {{ object.ubicacion }}</p>
+      </div>
+    </article>
+</div>
+{% endblock content %}

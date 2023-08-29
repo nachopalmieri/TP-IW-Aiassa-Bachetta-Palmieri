@@ -24,17 +24,7 @@
   {%include "nav.html"%}
 
     <!-- Mensajes de alerta -->
-  {% if messages %}
-    {% for message in messages %}
-      <div class="container-fluid mx-0 p-0 sticky-top">
-        <div
-          class="alert {{ message.tags }} alert-dismissable fade show"
-          role="alert">
-          {{ message }}
-        </div>
-      </div>
-    {% endfor %}
-  {% endif %}
+  {% include "alerts.html"%}
 
   <body>
     <div class="container h-100">

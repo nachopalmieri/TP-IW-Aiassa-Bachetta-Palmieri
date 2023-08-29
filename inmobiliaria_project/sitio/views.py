@@ -7,28 +7,25 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import AuthenticationForm
 from .models import *
-from .forms import RegistroForm, InicioSesionForm 
+from .forms import UserRegisterForm, InicioSesionForm, ProfileUpdateForm, UserUpdateForm
+from django.views.generic import ListView, DetailView, CreateView
 
+#Vistas para el sitio - USERS
 
-
-
-#Vistas para el sitio
-
-#Vista para el registro de usuarios
+#- REGISTRO DE USUARIOS
 def RegistroView(request):
-    form = RegistroForm()
+    form = UserRegisterForm()
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if not User.objects.filter(username=request.POST.get('username')).exists():
             if not User.objects.filter(email=request.POST.get('email')).exists():
                 if request.POST.get('password1') == request.POST.get('password2'):
-                    username = request.POST.get('username')
                     username = request.POST.get('username')
                     email = request.POST.get('email')
                     password = request.POST.get('password1')
                     user = User.objects.create_user(username, email, password)
                     user.save()
-
+                    messages.success(request, f'Tu cuenta ha sido creada.')
                     return redirect('login')
                 else:
                     messages.error(request, 'Las contraseñas no coinciden')
@@ -37,10 +34,10 @@ def RegistroView(request):
         else:
             messages.error(request, 'El usuario ya existe')
     else:
-        form = RegistroForm()
+        form = UserRegisterForm()
     return render(request, 'users/registration/register.html', {'form': form})
 
-#Vista para el login de usuarios
+#- LOGIN DE USUARIOS 
 def LoginView(request):
     if request.method == "POST":
         form = InicioSesionForm(request, data=request.POST)
@@ -50,8 +47,8 @@ def LoginView(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                #messages.success(request, 'Bienvenido ' + username)
-                return HttpResponseRedirect("/")
+                messages.success(request, 'Bienvenido ' + username)
+                return redirect('home')
             else:
                 messages.error(request, 'Credenciales incorrectas')
         else:
@@ -60,38 +57,38 @@ def LoginView(request):
     context = {'form': form}
     return render(request, 'users/registration/login.html', context)
 
-#Vistas para el logout de usuarios
-# def LogoutView(request):
-#     context = {}
-#     return render(request, 'users/registration/logout.html', context)
 
-
-def ContactoView(request):
-    context = {}
-    return render(request, 'contacto.html', context)
-
-def HomeView(request):
-    context = {
-        'publicaciones': Publicacion.objects.all()
-    }
-    return render(request, 'home.html', context)
-
+#- PERFIL DE USUARIO
 @login_required
 def PerfilView(request):
-    return render(request,'users/profile.html')
+    if request.method == "POST":
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Tu perfil ha sido actualizado.')
+            return redirect('perfil')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
 
-@login_required
-def PublicarView(request):
-    return render(request,'publicacion.html')
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request,'users/profile.html', context)
 
-#Vista con lo que se muestra en el mail de restauracion de contraseña
+
+#RESTAURACION DE USUARIOS
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'users/reset_password/password_reset.html'
     email_template_name = 'users/reset_password/password_reset_email.html'
     subject_template_name = 'users/reset_password/password_reset_subject.txt'
 
 class CustomPasswordResetView(PasswordResetView):
-
     template_name = 'users/reset_password/password_reset.html'
     email_template_name = 'users/reset_password/password_reset_email.html'
     subject_template_name = 'users/reset_password/password_reset_subject.txt'
@@ -103,5 +100,31 @@ class CustomPasswordResetView(PasswordResetView):
         context['protocol'] = self.protocol
         context['domain'] = self.domain
         return context
-
     
+#Vistas para SITIO
+
+#PUBLICACION
+@login_required
+def PublicarView(request):
+    return render(request,'sitio/publicacion.html')
+
+#CONTACTO
+def ContactoView(request):
+    context = {}
+    return render(request, 'contacto.html', context)
+
+#HOME 
+def HomeView(request):
+    context = {
+        'publicaciones': Publicacion.objects.all()
+    }
+    return render(request, 'sitio/home.html', context)
+
+class PublicacionListView(ListView):
+    model = Publicacion
+    template_name = 'sitio/home.html'
+    context_object_name = 'publicaciones'
+    ordering = ['-fecha_actualizado']
+
+class PublicacionDetailView(DetailView):
+    model = Publicacion

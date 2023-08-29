@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'crispy_bootstrap4',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -138,16 +139,20 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+#Agrego esto para manejar las imagenes del perfil
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 5 #Dejar este para el deploy
-#SITE_ID = 2 #Cambiar a este cuando estemos en local
-LOGIN_REDIRECT_URL = 'home'
+#SITE_ID = 5 #Dejar este para el deploy
+SITE_ID = 2 #Cambiar a este cuando estemos en local
+#LOGIN_REDIRECT_URL = 'home'
 #LOGOUT_REDIRECT_URL = 'home'
-LOGIN_URL = 'login'
+#LOGIN_URL = 'home'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

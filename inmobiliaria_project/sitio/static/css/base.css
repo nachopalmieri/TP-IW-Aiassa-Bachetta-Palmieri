@@ -1,3 +1,4 @@
+
 *{
     font-family: var(--font-mono);
 }
@@ -74,7 +75,15 @@ nav {
     color: #112240;
     transition: var(--transition);
   }
-  
+
+.content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+
 .login_btn {
     width: 100%;
     background: transparent;
@@ -125,10 +134,61 @@ nav {
     color: var(--white);
 }
 .logo img {
-    width: 200; /* Ajusta el ancho del logo según tus necesidades */
-    height: auto; /* Esto mantiene la proporción original del logo */
+    width: 200; 
+    height: auto; 
   }
 
 a{
     color: var(--green);
+}
+
+.container {
+    margin: 20px auto;
+    max-width: 800px; /* Ajusta el ancho máximo según tus preferencias */
+}
+
+.content-section {
+    background: var(--dark-slate);
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+
+.article-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.article-metadata {
+    margin-bottom: 10px;
+    color: var(--light-slate); /* Cambia el color del texto de metadatos */
+}
+
+.article-title {
+    color: var(--green);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.article-title:hover {
+    color: #112240;
+}
+
+.article-content {
+    color: var(--white);
+}
+
+/* Estilos para los campos adicionales */
+.media-body p {
+    color: var(--lightest-slate);
+    margin: 5px 0;
+}
+
+.publicacion-image {
+    max-width: 100%; /* Asegura que la imagen se ajuste al contenedor */
+    margin-top: 10px;
 }
