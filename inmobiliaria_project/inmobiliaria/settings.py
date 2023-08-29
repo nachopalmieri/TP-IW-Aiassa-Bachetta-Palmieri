@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    #'crispy_bootstrap5',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -51,8 +50,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
@@ -149,8 +148,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 6 #Dejar este para el deploy
-#SITE_ID = 2 #Cambiar a este cuando estemos en local
+#SITE_ID = 6 #Dejar este para el deploy
+SITE_ID = 2 #Cambiar a este cuando estemos en local
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'logout'
 LOGIN_URL = 'login'
