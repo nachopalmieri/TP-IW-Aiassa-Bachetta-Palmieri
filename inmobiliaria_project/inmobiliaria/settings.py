@@ -150,9 +150,9 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 5 #Dejar este para el deploy
 #SITE_ID = 2 #Cambiar a este cuando estemos en local
-#LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'home'
 #LOGOUT_REDIRECT_URL = 'home'
-#LOGIN_URL = 'home'
+LOGIN_URL = 'login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
