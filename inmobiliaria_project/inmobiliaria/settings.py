@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    #'crispy_bootstrap4',
+    'crispy_bootstrap4',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -151,7 +151,7 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 5 #Dejar este para el deploy
 #SITE_ID = 2 #Cambiar a este cuando estemos en local
 LOGIN_REDIRECT_URL = 'home'
-#LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'logout'
 LOGIN_URL = 'login'
 
 # Default primary key field type

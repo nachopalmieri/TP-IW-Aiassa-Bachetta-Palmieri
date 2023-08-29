@@ -17,7 +17,7 @@ urlpatterns = [
     path('publicar/', views.PublicarView, name = 'publicar'),
     path('contacto/', views.ContactoView, name = 'contact'),
 
-    path('accounts/profile/', views.PerfilView, name='profile'),
+    #path('accounts/profile/', views.PerfilView, name='profile'),
 
 #URLS de la aplicacion de restaurar password
     path('reset_password/', views.CustomPasswordResetView.as_view(), name='password_reset'),
