@@ -11,5 +11,15 @@ def create_profile(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=User)
-def save_profile(sender, instance, **kwargs):
-    instance.profile.save()
+def save_profile(sender, instance, created, **kwargs):
+    if created == False:
+        instance.profile.save()
+
+post_save.connect(save_profile, sender=User)
+
+# @receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
+# def save_profile(sender, instance, created, **kwargs):
+#     user = instance
+#     if created:
+#         profile = Profile(user=user)
+#         profile.save()
