@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    #'crispy_bootstrap4',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
+CRISPY_TEMPLATE_PACK = 'uni_form'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
