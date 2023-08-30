@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect,HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.decorators import login_required
@@ -8,7 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import AuthenticationForm
 from .models import *
 from .forms import UserRegisterForm, InicioSesionForm, ProfileUpdateForm, UserUpdateForm
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 #Vistas para el sitio - USERS
 
@@ -120,11 +122,87 @@ def HomeView(request):
     }
     return render(request, 'sitio/home.html', context)
 
+### CRUD DE PPUBLICACIONES ###
+
+#Listado de publicaciones -> Home
 class PublicacionListView(ListView):
     model = Publicacion
     template_name = 'sitio/home.html'
     context_object_name = 'publicaciones'
     ordering = ['-fecha_actualizado']
 
+#Detalle de publicaciones
 class PublicacionDetailView(DetailView):
     model = Publicacion
+
+#Crear publicaciones
+class PublicacionCreateView(LoginRequiredMixin, CreateView):
+    model = Publicacion
+    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','banos',
+              'metros_cuadrados','direccion','provincia','ciudad','imagen_principal']
+    
+    def form_valid(self, form):
+        form.instance.autor = self.request.user
+        return super().form_valid(form)
+
+#Editar publicaciones
+class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Publicacion
+    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','banos',
+              'metros_cuadrados','direccion','provincia','ciudad','imagen_principal']
+    
+    def form_valid(self, form):
+        form.instance.autor = self.request.user
+        return super().form_valid(form)
+    
+    #Codigo para evitar que cualquier usuario pueda editar publicaciones. 
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.autor:
+            return True
+        return False
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.get_object()
+        return context
+    
+    #Error 403 personalizado:
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        
+        post = self.get_object()
+        return HttpResponseForbidden(
+            f"No tienes permisos para editar esta publicación. <a href='{reverse('post-detail', args=[post.pk])}'>Volver atrás</a>"
+        )
+
+#Eliminar publicaciones
+class PublicacionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Publicacion
+    success_url = '/'
+    
+    #Codigo para evitar que cualquier usuario pueda editar publicaciones. 
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.autor:
+            return True
+        return False
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.get_object()
+        return context
+    
+    #Error 403 personalizado:
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        
+        post = self.get_object()
+        return HttpResponseForbidden(
+            f"No tienes permisos para eliminar esta publicación. <a href='{reverse('post-detail', args=[post.pk])}'>Volver atrás</a>"
+        )
+    
+    
+

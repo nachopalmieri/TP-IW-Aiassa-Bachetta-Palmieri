@@ -9,18 +9,27 @@
         <div class="article-metadata">
           <a class="mr-2" href="#">{{ object.autor }}</a>
           <small class="text-muted">{{ object.fecha_creacion|date:"F d, Y" }}</small>
+          {% if object.autor == user %}
+            <div>
+              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Actualizar</a>
+              <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Eliminar</a>
+            </div>
+          {% endif %}
         </div>
         <h2 class="article-title"> {{ object.titulo }} </h2>
         <p class="article-content">{{ object.descripcion }}</p>
         
         <img src="{{ object.imagen_principal.url }}" alt="{{ object.titulo }}" class="publicacion-image">
 
-        <p>Tipo de Propiedad: {{ object.get_tipo_propiedad_display }}</p>
+        <p>{{ object.get_tipo_propiedad_display }}</p>
+        <p>{{ object.get_tipo_operacion_display}}</p>
         <p>Precio: {{ object.precio }}</p>
         <p>Habitaciones: {{ object.habitaciones }}</p>
         <p>Baños: {{ object.banos }}</p>
         <p>Metros Cuadrados: {{ object.metros_cuadrados }}</p>
-        <p>Ubicación: {{ object.ubicacion }}</p>
+        <p>Direccion: {{ object.direccion }}</p>
+        <p>Provincia: {{ object.provincia }}</p>
+        <p>Ciudad: {{ object.ciudad }}</p>
       </div>
     </article>
 </div>
