@@ -2,6 +2,41 @@
 {% block content %}
 {% include "nav.html" %}
 {% include "alerts.html" %}
+
+#Filtro de busqueda
+<div class ="form-container-search">
+  <form method="get">
+    <input type="text" name="q" placeholder="Buscar...">
+    <button type="submit">Buscar</button>
+    <div>
+        <label for="precio_min">Precio mínimo:</label>
+        <input type="number" name="precio_min">
+        <label for="precio_max">Precio máximo:</label>
+        <input type="number" name="precio_max">
+        <label for="banos">Número de baños:</label>
+        <input type="number" name="banos">
+        <label for="habitaciones">Número de dormitorios:</label>
+        <input type="number" name="habitaciones">
+        <label for="tipo_operacion">Tipo de operación:</label>
+        <select name="tipo_operacion">
+            <option value="">Todos</option>
+            <option value="venta">Venta</option>
+            <option value="alquiler">Alquiler</option>
+            <option value="temporada">Temporada</option>
+        </select>
+        <label for="tipo_propiedad">Tipo de propiedad:</label>
+        <select name="tipo_propiedad">
+            <option value="">Todos</option>
+            <option value="departamento">Departamento</option>
+            <option value="casa">Casa</option>
+            <option value="deposito">Deposito</option>
+            <option value="edificio">Edificio</option>
+            <option value="quinta">Quinta Vacacional</option>
+        </select>
+        <button type="submit">Filtrar</button>
+    </div>
+  </form>
+</div>
 <div class="container">
   {% for publicacion in publicaciones %}
     <article class="media content-section">

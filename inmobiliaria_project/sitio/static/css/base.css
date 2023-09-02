@@ -193,3 +193,48 @@ a{
     margin-top: 10px;
 }
 
+/* Estilos para los filtros de búsqueda */
+.form-container-search {
+    background-color: var(--light-navy);
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: flex; /* Establece el contenedor como un flex container */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en filas si no caben en una sola línea */
+    align-items: center; /* Alinea verticalmente los elementos en el centro */
+    justify-content: flex-start; /* Alinea los elementos al inicio de la línea */
+}
+
+.form-container-search label {
+    color: var(--white);
+    margin-right: 10px;
+    white-space: nowrap; /* Evita que las etiquetas se envuelvan a la siguiente línea */
+}
+
+.form-container-search input[type="number"],
+.form-container-search select {
+    background-color: var(--dark-slate);
+    color: var(--white); /* Establece el color del texto en blanco */
+    border: 1px solid var(--dark-slate);
+    border-radius: 4px;
+    padding: 5px;
+    margin-right: 10px;
+    width: 100px; /* Ancho fijo para los campos de entrada */
+}
+
+.form-container-search button[type="submit"] {
+    background-color: var(--green);
+    color: var(--lightest-slate);
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.form-container-search button[type="submit"]:hover {
+    background-color: var(--dark-slate);
+    color: var(--white);
+}
+
+
