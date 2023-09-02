@@ -8,6 +8,7 @@ from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 from .models import *
 from .forms import UserRegisterForm, InicioSesionForm, ProfileUpdateForm, UserUpdateForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -116,11 +117,11 @@ def ContactoView(request):
     return render(request, 'contacto.html', context)
 
 #HOME 
-def HomeView(request):
-    context = {
-        'publicaciones': Publicacion.objects.all()
-    }
-    return render(request, 'sitio/home.html', context)
+# def HomeView(request):
+#     context = {
+#         'publicaciones': Publicacion.objects.all()
+#     }
+#     return render(request, 'sitio/home.html', context)
 
 ### CRUD DE PPUBLICACIONES ###
 
@@ -130,6 +131,39 @@ class PublicacionListView(ListView):
     template_name = 'sitio/home.html'
     context_object_name = 'publicaciones'
     ordering = ['-fecha_actualizado']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        # Obtén los parámetros de búsqueda de la URL
+        precio_min = self.request.GET.get('precio_min')
+        precio_max = self.request.GET.get('precio_max')
+        banos = self.request.GET.get('banos')
+        habitaciones = self.request.GET.get('habitaciones')
+        tipo_operacion = self.request.GET.get('tipo_operacion')
+        tipo_propiedad = self.request.GET.get('tipo_propiedad')
+        provincia = self.request.GET.get('provincia')
+        ciudad = self.request.GET.get('ciudad')
+        
+        # Aplica los filtros solo si se proporcionan valores
+        if precio_min:
+            queryset = queryset.filter(precio__gte=precio_min)
+        if precio_max:
+            queryset = queryset.filter(precio__lte=precio_max)
+        if banos:
+            queryset = queryset.filter(banos=banos)
+        if habitaciones:
+            queryset = queryset.filter(habitaciones=habitaciones)
+        if tipo_operacion:
+            queryset = queryset.filter(tipo_operacion=tipo_operacion)
+        if tipo_propiedad:
+            queryset = queryset.filter(tipo_propiedad=tipo_propiedad)
+        if provincia:
+            queryset = queryset.filter(provincia__icontains=provincia)
+        if ciudad:
+            queryset = queryset.filter(ciudad__icontains=ciudad)
+
+        return queryset
 
 #Detalle de publicaciones
 class PublicacionDetailView(DetailView):
@@ -144,7 +178,7 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.autor = self.request.user
         return super().form_valid(form)
-
+    
 #Editar publicaciones
 class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Publicacion

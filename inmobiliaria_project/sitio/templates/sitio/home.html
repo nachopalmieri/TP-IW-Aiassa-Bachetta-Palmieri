@@ -3,37 +3,40 @@
 {% include "nav.html" %}
 {% include "alerts.html" %}
 
-#Filtro de busqueda
-<div class ="form-container-search">
+<div class="form-container-search">
   <form method="get">
     <input type="text" name="q" placeholder="Buscar...">
     <button type="submit">Buscar</button>
     <div>
-        <label for="precio_min">Precio mínimo:</label>
-        <input type="number" name="precio_min">
-        <label for="precio_max">Precio máximo:</label>
-        <input type="number" name="precio_max">
-        <label for="banos">Número de baños:</label>
-        <input type="number" name="banos">
-        <label for="habitaciones">Número de dormitorios:</label>
-        <input type="number" name="habitaciones">
-        <label for="tipo_operacion">Tipo de operación:</label>
-        <select name="tipo_operacion">
-            <option value="">Todos</option>
-            <option value="venta">Venta</option>
-            <option value="alquiler">Alquiler</option>
-            <option value="temporada">Temporada</option>
-        </select>
-        <label for="tipo_propiedad">Tipo de propiedad:</label>
-        <select name="tipo_propiedad">
-            <option value="">Todos</option>
-            <option value="departamento">Departamento</option>
-            <option value="casa">Casa</option>
-            <option value="deposito">Deposito</option>
-            <option value="edificio">Edificio</option>
-            <option value="quinta">Quinta Vacacional</option>
-        </select>
-        <button type="submit">Filtrar</button>
+      <label for="tipo_operacion">Tipo de operación:</label>
+      <select name="tipo_operacion">
+        <option value="">Todos</option>
+        <option value="venta" {% if request.GET.tipo_operacion == "venta" %}selected{% endif %}>Venta</option>
+        <option value="alquiler" {% if request.GET.tipo_operacion == "alquiler" %}selected{% endif %}>Alquiler</option>
+        <option value="temporada" {% if request.GET.tipo_operacion == "temporada" %}selected{% endif %}>Temporada</option>
+      </select>
+      <label for="tipo_propiedad">Tipo de propiedad:</label>
+      <select name="tipo_propiedad">
+        <option value="">Todos</option>
+        <option value="departamento" {% if request.GET.tipo_propiedad == "departamento" %}selected{% endif %}>Departamento</option>
+        <option value="casa" {% if request.GET.tipo_propiedad == "casa" %}selected{% endif %}>Casa</option>
+        <option value="deposito" {% if request.GET.tipo_propiedad == "deposito" %}selected{% endif %}>Depósito</option>
+        <option value="edificio" {% if request.GET.tipo_propiedad == "edificio" %}selected{% endif %}>Edificio</option>
+        <option value="quinta" {% if request.GET.tipo_propiedad == "quinta" %}selected{% endif %}>Quinta Vacacional</option>
+      </select>
+      <label for="provincia">Provincia:</label>
+      <input type="text" name="provincia" placeholder="Ingrese la provincia">
+      <label for="ciudad">Ciudad:</label>
+      <input type="text" name="ciudad" placeholder="Ingrese la ciudad">
+      <label for="precio_min">Precio mínimo:</label>
+      <input type="number" name="precio_min" value="{{ request.GET.precio_min }}">
+      <label for="precio_max">Precio máximo:</label>
+      <input type="number" name="precio_max" value="{{ request.GET.precio_max }}">
+      <label for="banos">Baños:</label>
+      <input type="number" name="banos" value="{{ request.GET.banos }}">
+      <label for="habitaciones">Dormitorios:</label>
+      <input type="number" name="habitaciones" value="{{ request.GET.habitaciones }}">
+      <button type="submit">Filtrar</button>
     </div>
   </form>
 </div>
@@ -48,8 +51,9 @@
         </div>
         <h2><a class="article-title" href="{% url 'post-detail' publicacion.id %}">{{ publicacion.titulo }}</a></h2>
         <p class="article-content">{{ publicacion.descripcion }}</p>
-        
-        <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image">
+
+        {% comment %} <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image"> {% endcomment %}
+        <img class="publicacion-image" src="{{ publicacion.imagen_principal.url }}">
 
         <p>{{ publicacion.get_tipo_operacion_display }}</p>
         <p>{{ publicacion.get_tipo_propiedad_display}}</p>
@@ -66,6 +70,7 @@
   {% endfor %}
 </div>
 {% endblock content %}
+
 
 
 

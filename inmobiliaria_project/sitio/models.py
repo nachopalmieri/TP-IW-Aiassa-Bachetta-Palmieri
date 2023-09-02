@@ -34,7 +34,7 @@ class Publicacion(models.Model):
     direccion = models.CharField(default='', max_length=200)
     provincia = models.CharField(default='', max_length=200)
     ciudad = models.CharField(default='', max_length=200)
-    imagen_principal = models.ImageField(default='propiedad_default.jpg', upload_to='propiedades/')
+    imagen_principal = models.ImageField(default='propiedad_default.jpg', upload_to='propiedades')
     fecha_creacion = models.DateTimeField(default=timezone.now)
     fecha_actualizado = models.DateTimeField(auto_now=True)
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -62,13 +62,13 @@ class Profile(models.Model):
 
 #post_save.connect(create_profile, sender=User)
 
-    # def save(self, *args, **kwargs):
-    #     super(Profile, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
-    #     img = Image.open(self.image.path)
+        img = Image.open(self.image.path)
 
-    #     if img.height > 300 or img.width > 300:
-    #         output_size = (300,300)
-    #         img.thumbnail(output_size)
-    #         img.save(self.image.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
