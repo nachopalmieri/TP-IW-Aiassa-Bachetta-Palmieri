@@ -42,6 +42,7 @@ def RegistroView(request):
 
 #- LOGIN DE USUARIOS 
 def LoginView(request):
+    next_url = request.GET.get('next')  # Obtener la URL a la que se redirigirá después del inicio de sesión
     if request.method == "POST":
         form = InicioSesionForm(request, data=request.POST)
         if form.is_valid():
@@ -51,7 +52,10 @@ def LoginView(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Bienvenido ' + username)
-                return redirect('home')
+                if next_url:  # Si hay una URL 'next', redirigir al 'publicar'
+                    return redirect(next_url)
+                else:
+                    return redirect('home')  # Si no hay una URL 'next', redirigir  al inicio
             else:
                 messages.error(request, 'Credenciales incorrectas')
         else:

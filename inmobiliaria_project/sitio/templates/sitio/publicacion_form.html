@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% include "alerts.html" %}
 {% block content %}
     <div class="content-section">
         <form method="POST" enctype="multipart/form-data">
@@ -10,6 +11,7 @@
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Publicar</button>
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancelar</a>
             </div>
         </form>
     </div>

@@ -1,16 +1,25 @@
+{% block content %} 
+{% endblock content %}
+
 {% if messages %}
   {% for message in messages %}
     <div class="container-fluid mx-0 p-0 sticky-top">
-      <div class="alert {{ message.tags }} alert-dismissable fade show" role="alert">
+      <div id="alert-{{ forloop.counter }}" class="alert {{ message.tags }} alert-dismissable fade show" role="alert">
         {{ message }}
       </div>
     </div>
   {% endfor %}
-  <script>
-    $(document).ready(function() {
-      $(".alert").delay(2000).slideUp(200, function() {
-        $(this).alert('close');
-      });
-    });
-  </script>
 {% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  // Cierra automáticamente las alertas después de 3 segundos
+  $('.alert').each(function(index) {
+    const alert = $(this);
+    setTimeout(function() {
+      alert.alert('close');
+    }, 3000 * (index + 1));
+  });
+});
+</script>
