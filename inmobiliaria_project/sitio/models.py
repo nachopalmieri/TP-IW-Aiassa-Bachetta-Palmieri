@@ -5,6 +5,9 @@ from PIL import Image
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from io import BytesIO
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage as storage  
 # Create your models here.
 #User._meta.get_field('email')._unique = True
 
@@ -62,13 +65,32 @@ class Profile(models.Model):
 
 #post_save.connect(create_profile, sender=User)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+def save(self, *args, **kwargs):
+    super(Profile, self).save(*args, **kwargs)
+    
+    # After save, read the file
+    image_read = storage.open(self.image.name, "r")
+    image = Image.open(image_read)
+    
+    if image.height > 200 or image.width > 200:
+        size = (200, 200)
+        
+        # Create a buffer to hold the bytes
+        imageBuffer = BytesIO()
+        
+        # Resize  
+        image.thumbnail(size, Image.ANTIALIAS)
+        
+        # Save the image as jpeg to the buffer
+        image.save(imageBuffer, image.format)
+        
+        # Save the modified image
+        user = User.objects.get(pk=self.pk)
+        user.profile.image.save(self.image.name, ContentFile(imageBuffer.getvalue()))
+        
+        image_read = storage.open(user.profile.image.name, "r")
+        image = Image.open(image_read)
+        image.show()
+        image_read.close()
 
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
 

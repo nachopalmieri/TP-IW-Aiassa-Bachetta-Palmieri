@@ -16,6 +16,7 @@ import dj_database_url
 #from decouple import config
 #import django_heroku
 from django.contrib.messages import constants as messages
+import cloudinary_storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 
@@ -176,6 +179,14 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'profile',
     'email'
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dghothcvt',
+    'API_KEY': '559259792989129',
+    'API_SECRET': '3yTJCeYc03HlCFas-RLL95MBOps'
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 if 'RENDER' in os.environ:
     print("USING RENDER.COM SETTINGS!")
