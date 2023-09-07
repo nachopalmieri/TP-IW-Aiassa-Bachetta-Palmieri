@@ -12,10 +12,39 @@ from django.db.models import Q
 from .models import *
 from .forms import UserRegisterForm, InicioSesionForm, ProfileUpdateForm, UserUpdateForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC, EmailAddress
+from allauth.account.utils import send_email_confirmation
+#from .decorators import email_verified_required
+from allauth.account.decorators import verified_email_required
+from django.utils.decorators import method_decorator
 
 #Vistas para el sitio - USERS
 
 #- REGISTRO DE USUARIOS
+# def RegistroView(request):
+#     form = UserRegisterForm()
+#     if request.method == 'POST':
+#         form = UserRegisterForm(request.POST)
+#         if not User.objects.filter(username=request.POST.get('username')).exists():
+#             if not User.objects.filter(email=request.POST.get('email')).exists():
+#                 if request.POST.get('password1') == request.POST.get('password2'):
+#                     username = request.POST.get('username')
+#                     email = request.POST.get('email')
+#                     password = request.POST.get('password1')
+#                     user = User.objects.create_user(username, email, password)
+#                     user.save()
+#                     messages.success(request, f'Tu cuenta ha sido creada.')
+#                     return redirect('login')
+#                 else:
+#                     messages.error(request, 'Las contraseñas no coinciden')
+#             else:
+#                 messages.error(request, 'El email ya existe')
+#         else:
+#             messages.error(request, 'El usuario ya existe')
+#     else:
+#         form = UserRegisterForm()
+#     return render(request, 'users/registration/register.html', {'form': form})
+
 def RegistroView(request):
     form = UserRegisterForm()
     if request.method == 'POST':
@@ -27,8 +56,10 @@ def RegistroView(request):
                     email = request.POST.get('email')
                     password = request.POST.get('password1')
                     user = User.objects.create_user(username, email, password)
-                    user.save()
-                    messages.success(request, f'Tu cuenta ha sido creada.')
+                    
+                    # Envía el correo electrónico de confirmación
+                    send_email_confirmation(request, user)
+                    #messages.success(request, f'Tu cuenta ha sido creada. Por favor, verifica tu correo electrónico para activarla.')
                     return redirect('login')
                 else:
                     messages.error(request, 'Las contraseñas no coinciden')
@@ -67,6 +98,7 @@ def LoginView(request):
 
 #- PERFIL DE USUARIO
 @login_required
+@verified_email_required
 def PerfilView(request):
     if request.method == "POST":
         u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -109,11 +141,6 @@ class CustomPasswordResetView(PasswordResetView):
         return context
     
 #Vistas para SITIO
-
-#PUBLICACION
-@login_required
-def PublicarView(request):
-    return render(request,'sitio/publicacion.html')
 
 #CONTACTO
 def ContactoView(request):
@@ -174,6 +201,7 @@ class PublicacionDetailView(DetailView):
     model = Publicacion
 
 #Crear publicaciones
+@method_decorator(verified_email_required, name='dispatch')
 class PublicacionCreateView(LoginRequiredMixin, CreateView):
     model = Publicacion
     fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','banos',
@@ -184,6 +212,7 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
     
 #Editar publicaciones
+@method_decorator(verified_email_required, name='dispatch')
 class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Publicacion
     fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','banos',
@@ -216,6 +245,7 @@ class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         )
 
 #Eliminar publicaciones
+@method_decorator(verified_email_required, name='dispatch')
 class PublicacionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Publicacion
     success_url = '/'

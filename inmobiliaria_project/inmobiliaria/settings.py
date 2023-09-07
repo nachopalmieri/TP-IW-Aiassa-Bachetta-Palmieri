@@ -156,6 +156,8 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'logout'
 LOGIN_URL = 'login'
 
+#ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
