@@ -1,0 +1,2 @@
+{% load i18n %}
+{% blocktrans %}Tu cuenta ha sido creada. Por favor, verifica tu correo electrónico {{email}} para activarla.{% endblocktrans %}

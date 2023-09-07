@@ -1,0 +1,13 @@
+{% load i18n %}
+
+{% blocktrans with site_name='TuLugar' site_url='http://tulugar.onrender.com/' %}
+Hola desde {{ site_url }}!
+{% endblocktrans %}
+
+{% block content %}{% endblock %}
+
+{% blocktrans with site_name='TuLugar' site_url='http://tulugar.onrender.com/' %}
+Gracias por usar {{ site_url }}
+{% endblocktrans %}
+
+

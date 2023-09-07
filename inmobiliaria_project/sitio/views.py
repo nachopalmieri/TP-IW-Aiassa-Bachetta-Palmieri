@@ -139,6 +139,7 @@ class CustomPasswordResetView(PasswordResetView):
         context['protocol'] = self.protocol
         context['domain'] = self.domain
         return context
+
     
 #Vistas para SITIO
 
