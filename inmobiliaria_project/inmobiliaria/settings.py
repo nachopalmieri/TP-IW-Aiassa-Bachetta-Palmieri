@@ -180,13 +180,13 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'email'
 ]
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dghothcvt',
-    'API_KEY': '559259792989129',
-    'API_SECRET': '3yTJCeYc03HlCFas-RLL95MBOps'
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'dghothcvt',
+#     'API_KEY': '559259792989129',
+#     'API_SECRET': '3yTJCeYc03HlCFas-RLL95MBOps'
+# }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 if 'RENDER' in os.environ:
     print("USING RENDER.COM SETTINGS!")
