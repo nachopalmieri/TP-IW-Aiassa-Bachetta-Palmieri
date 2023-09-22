@@ -38,7 +38,7 @@
       <div class="amb-dorm-filter">
         <button type="button" onclick="toggleAmbDormFilter()">Amb | Dorm <i id="arrow-icon" class="fas fa-chevron-down"></i> </button>
         <div id="amb-dorm-options" class="amb-dorm-options" style="display: none;">
-          <input type="number" name="ambientes" placeholder="Ambientes" value="{{ request.GET.ambientes }}">
+          {% comment %} <input type="number" name="ambientes" placeholder="Ambientes" value="{{ request.GET.ambientes }}"> {% endcomment %}
           <input type="number" name="habitaciones" placeholder="Dormitorios" value="{{ request.GET.habitaciones }}">
         </div>
       </div>      
@@ -65,7 +65,7 @@
         <p>{{ publicacion.get_tipo_propiedad_display}}</p>
         <p>Precio: {{ publicacion.precio }}</p>
         <p>Habitaciones: {{ publicacion.habitaciones }}</p>
-        <p>ambientes: {{ publicacion.ambientes }}</p>
+        {% comment %} <p>ambientes: {{ publicacion.ambientes }}</p> {% endcomment %}
         <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
         <p>Direccion: {{ publicacion.direccion }}</p>
         <p>Provincia: {{ publicacion.provincia }}</p>

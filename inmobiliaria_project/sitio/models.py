@@ -33,7 +33,7 @@ class Publicacion(models.Model):
     tipo_propiedad = models.CharField(default='',max_length=20, choices=TIPO_PROPIEDAD)
     precio = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     habitaciones = models.PositiveIntegerField(default=1)
-    ambientes = models.PositiveIntegerField(default=1)
+    # ambientes = models.PositiveIntegerField(default=1)
     metros_cuadrados = models.PositiveIntegerField(default=1)
     direccion = models.CharField(default='', max_length=200)
     provincia = models.CharField(default='', max_length=200)

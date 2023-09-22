@@ -170,7 +170,7 @@ class PublicacionListView(ListView):
         # Obtén los parámetros de búsqueda de la URL
         precio_min = self.request.GET.get('precio_min')
         precio_max = self.request.GET.get('precio_max')
-        ambientes = self.request.GET.get('ambientes')
+        # ambientes = self.request.GET.get('ambientes')
         habitaciones = self.request.GET.get('habitaciones')
         tipo_operacion = self.request.GET.get('tipo_operacion')
         tipo_propiedad = self.request.GET.get('tipo_propiedad')
@@ -182,8 +182,8 @@ class PublicacionListView(ListView):
             queryset = queryset.filter(precio__gte=precio_min)
         if precio_max:
             queryset = queryset.filter(precio__lte=precio_max)
-        if ambientes:
-            queryset = queryset.filter(ambientes=ambientes)
+        # if ambientes:
+        #     queryset = queryset.filter(ambientes=ambientes)
         if habitaciones:
             queryset = queryset.filter(habitaciones=habitaciones)
         if tipo_operacion:
@@ -205,8 +205,8 @@ class PublicacionDetailView(DetailView):
 @method_decorator(verified_email_required, name='dispatch')
 class PublicacionCreateView(LoginRequiredMixin, CreateView):
     model = Publicacion
-    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','ambientes',
-              'metros_cuadrados','direccion','provincia','ciudad','imagen_principal']
+    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones',
+              'metros_cuadrados','direccion','provincia','ciudad','imagen_principal'] #ambientes
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
@@ -216,8 +216,8 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
 @method_decorator(verified_email_required, name='dispatch')
 class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Publicacion
-    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','ambientes',
-              'metros_cuadrados','direccion','provincia','ciudad','imagen_principal']
+    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones',
+              'metros_cuadrados','direccion','provincia','ciudad','imagen_principal'] #ambientes,
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
@@ -277,7 +277,7 @@ class PublicacionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 @login_required
 def FavoritosView(request, pk):
     publicacion = get_object_or_404(Publicacion, pk=pk)
-    
+
     favorito = int(request.GET.get('favorito', 0))  # 1 si es favorito, 0 si no lo es
 
     if favorito:
