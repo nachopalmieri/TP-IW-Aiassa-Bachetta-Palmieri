@@ -65,7 +65,7 @@
         <p>{{ publicacion.get_tipo_propiedad_display}}</p>
         <p>Precio: {{ publicacion.precio }}</p>
         <p>Habitaciones: {{ publicacion.habitaciones }}</p>
-        <p>Ambientes: {{ publicacion.ambientes }}</p>
+        {% comment %} <p>ambientes: {{ publicacion.ambientes }}</p> {% endcomment %}
         <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
         <p>Direccion: {{ publicacion.direccion }}</p>
         <p>Provincia: {{ publicacion.provincia }}</p>
