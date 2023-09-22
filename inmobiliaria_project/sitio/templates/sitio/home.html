@@ -47,7 +47,7 @@
   </form>
 </div>
 <div class="container">
-  {% for publicacion in publicaciones %}
+  {% comment %} {% for publicacion in publicaciones %}
     <article class="media content-section">
       <img class="rounded-circle article-img" src="{{ publicacion.autor.profile.image.url }}">
       <div class="media-body">
@@ -59,14 +59,14 @@
         <p class="article-content">{{ publicacion.descripcion }}</p>
 
         {% comment %} <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image"> {% endcomment %}
-        <img class="publicacion-image" src="{{ publicacion.imagen_principal.url }}">
+        {% comment %} <img class="publicacion-image" src="{{ publicacion.imagen_principal.url }}">
 
         <p>{{ publicacion.get_tipo_operacion_display }}</p>
         <p>{{ publicacion.get_tipo_propiedad_display}}</p>
         <p>Precio: {{ publicacion.precio }}</p>
         <p>Habitaciones: {{ publicacion.habitaciones }}</p>
         {% comment %} <p>ambientes: {{ publicacion.ambientes }}</p> {% endcomment %}
-        <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
+        {% comment %} <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
         <p>Direccion: {{ publicacion.direccion }}</p>
         <p>Provincia: {{ publicacion.provincia }}</p>
         <p>Ciudad: {{ publicacion.ciudad }}</p>
@@ -79,7 +79,7 @@
           {% endif %}
         </div>
     </article>
-  {% endfor %}
+  {% endfor %} {% endcomment %}
 </div>
 {% endblock content %}
 
