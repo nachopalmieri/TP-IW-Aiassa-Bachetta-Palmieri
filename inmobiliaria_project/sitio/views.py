@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect,HttpResponseForbidden
+from django.http import HttpResponseRedirect,HttpResponseForbidden,JsonResponse
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.decorators import login_required
@@ -170,7 +170,7 @@ class PublicacionListView(ListView):
         # Obtén los parámetros de búsqueda de la URL
         precio_min = self.request.GET.get('precio_min')
         precio_max = self.request.GET.get('precio_max')
-        banos = self.request.GET.get('banos')
+        ambientes = self.request.GET.get('ambientes')
         habitaciones = self.request.GET.get('habitaciones')
         tipo_operacion = self.request.GET.get('tipo_operacion')
         tipo_propiedad = self.request.GET.get('tipo_propiedad')
@@ -182,8 +182,8 @@ class PublicacionListView(ListView):
             queryset = queryset.filter(precio__gte=precio_min)
         if precio_max:
             queryset = queryset.filter(precio__lte=precio_max)
-        if banos:
-            queryset = queryset.filter(banos=banos)
+        if ambientes:
+            queryset = queryset.filter(ambientes=ambientes)
         if habitaciones:
             queryset = queryset.filter(habitaciones=habitaciones)
         if tipo_operacion:
@@ -205,7 +205,7 @@ class PublicacionDetailView(DetailView):
 @method_decorator(verified_email_required, name='dispatch')
 class PublicacionCreateView(LoginRequiredMixin, CreateView):
     model = Publicacion
-    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','banos',
+    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','ambientes',
               'metros_cuadrados','direccion','provincia','ciudad','imagen_principal']
     
     def form_valid(self, form):
@@ -216,7 +216,7 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
 @method_decorator(verified_email_required, name='dispatch')
 class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Publicacion
-    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','banos',
+    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones','ambientes',
               'metros_cuadrados','direccion','provincia','ciudad','imagen_principal']
     
     def form_valid(self, form):
@@ -274,4 +274,21 @@ class PublicacionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         )
     
     
+@login_required
+def FavoritosView(request, pk):
+    publicacion = get_object_or_404(Publicacion, pk=pk)
+    
+    favorito = int(request.GET.get('favorito', 0))  # 1 si es favorito, 0 si no lo es
 
+    if favorito:
+        request.user.profile.favoritas.remove(publicacion)
+    else:
+        request.user.profile.favoritas.add(publicacion)
+
+    return redirect('home')
+
+
+@login_required
+def MisFavoritosView(request):
+    favoritas = request.user.profile.favoritas.all()
+    return render(request, 'ver_favoritos.html', {'favoritas': favoritas})
