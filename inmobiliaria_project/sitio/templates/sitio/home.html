@@ -8,34 +8,40 @@
     <input type="text" name="q" placeholder="Buscar...">
     <button type="submit">Buscar</button>
     <div>
-      <label for="tipo_operacion">Tipo de operación:</label>
-      <select name="tipo_operacion">
+    <label for="tipo_operacion" class="sr-only">Tipo de operación:</label>
+      <select name="tipo_operacion" id="tipo_operacion" onchange="this.form.submit()">
         <option value="">Todos</option>
         <option value="venta" {% if request.GET.tipo_operacion == "venta" %}selected{% endif %}>Venta</option>
         <option value="alquiler" {% if request.GET.tipo_operacion == "alquiler" %}selected{% endif %}>Alquiler</option>
         <option value="temporada" {% if request.GET.tipo_operacion == "temporada" %}selected{% endif %}>Temporada</option>
       </select>
-      <label for="tipo_propiedad">Tipo de propiedad:</label>
-      <select name="tipo_propiedad">
-        <option value="">Todos</option>
+    <label for="tipo_propiedad" class="sr-only">Tipo de propiedad:</label>
+      <select name="tipo_propiedad" id="tipo_operacion"  onchange="this.form.submit()">
+        <option value="">Propiedad</option>
         <option value="departamento" {% if request.GET.tipo_propiedad == "departamento" %}selected{% endif %}>Departamento</option>
         <option value="casa" {% if request.GET.tipo_propiedad == "casa" %}selected{% endif %}>Casa</option>
         <option value="deposito" {% if request.GET.tipo_propiedad == "deposito" %}selected{% endif %}>Depósito</option>
         <option value="edificio" {% if request.GET.tipo_propiedad == "edificio" %}selected{% endif %}>Edificio</option>
         <option value="quinta" {% if request.GET.tipo_propiedad == "quinta" %}selected{% endif %}>Quinta Vacacional</option>
       </select>
-      <label for="provincia">Provincia:</label>
+      {% comment %} <label for="provincia">Provincia:</label>
       <input type="text" name="provincia" placeholder="Ingrese la provincia">
       <label for="ciudad">Ciudad:</label>
-      <input type="text" name="ciudad" placeholder="Ingrese la ciudad">
-      <label for="precio_min">Precio mínimo:</label>
-      <input type="number" name="precio_min" value="{{ request.GET.precio_min }}">
-      <label for="precio_max">Precio máximo:</label>
-      <input type="number" name="precio_max" value="{{ request.GET.precio_max }}">
-      <label for="banos">Baños:</label>
-      <input type="number" name="banos" value="{{ request.GET.banos }}">
-      <label for="habitaciones">Dormitorios:</label>
-      <input type="number" name="habitaciones" value="{{ request.GET.habitaciones }}">
+      <input type="text" name="ciudad" placeholder="Ingrese la ciudad"> {% endcomment %}
+      <div class="precio-container">
+        <button type="button" onclick="applyPriceFilter()">Precio <i id="arrow-icon" class="fas fa-chevron-down"></i> </button>
+        <div id="precio-options" class="precio-options" style="display: none;">
+          <input type="number" id="precio_min" name="precio_min" placeholder="Desde" onclick="clearPlaceholder(this)">
+          <input type="number" id="precio_max" name="precio_max" placeholder="Hasta" onclick="clearPlaceholder(this)">
+        </div>    
+      </div> 
+      <div class="amb-dorm-filter">
+        <button type="button" onclick="toggleAmbDormFilter()">Amb | Dorm <i id="arrow-icon" class="fas fa-chevron-down"></i> </button>
+        <div id="amb-dorm-options" class="amb-dorm-options" style="display: none;">
+          <input type="number" name="ambientes" placeholder="Ambientes" value="{{ request.GET.ambientes }}">
+          <input type="number" name="habitaciones" placeholder="Dormitorios" value="{{ request.GET.habitaciones }}">
+        </div>
+      </div>      
       <button type="submit">Filtrar</button>
     </div>
   </form>
@@ -52,20 +58,26 @@
         <h2><a class="article-title" href="{% url 'post-detail' publicacion.id %}">{{ publicacion.titulo }}</a></h2>
         <p class="article-content">{{ publicacion.descripcion }}</p>
 
-        {% comment %} <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image"> {% endcomment %}
+        <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image">
         <img class="publicacion-image" src="{{ publicacion.imagen_principal.url }}">
 
         <p>{{ publicacion.get_tipo_operacion_display }}</p>
         <p>{{ publicacion.get_tipo_propiedad_display}}</p>
         <p>Precio: {{ publicacion.precio }}</p>
         <p>Habitaciones: {{ publicacion.habitaciones }}</p>
-        <p>Baños: {{ publicacion.banos }}</p>
+        <p>ambientes: {{ publicacion.ambientes }}</p>
         <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
         <p>Direccion: {{ publicacion.direccion }}</p>
         <p>Provincia: {{ publicacion.provincia }}</p>
         <p>Ciudad: {{ publicacion.ciudad }}</p>
 
-      </div>
+        <div class="favorito-button">
+          {% if publicacion in request.user.profile.favoritas.all %}
+              <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
+          {% else %}
+              <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
+          {% endif %}
+        </div>
     </article>
   {% endfor %}
 </div>

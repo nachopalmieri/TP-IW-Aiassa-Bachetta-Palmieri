@@ -25,11 +25,18 @@
         <p>{{ object.get_tipo_operacion_display}}</p>
         <p>Precio: {{ object.precio }}</p>
         <p>Habitaciones: {{ object.habitaciones }}</p>
-        <p>Baños: {{ object.banos }}</p>
+        {% comment %} <p>Ambientes: {{ object.ambientes }}</p> {% endcomment %}
         <p>Metros Cuadrados: {{ object.metros_cuadrados }}</p>
         <p>Direccion: {{ object.direccion }}</p>
         <p>Provincia: {{ object.provincia }}</p>
         <p>Ciudad: {{ object.ciudad }}</p>
+      </div>
+      <div class="favorito-button">
+        {% if publicacion in request.user.profile.favoritas.all %}
+            <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
+        {% else %}
+            <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
+        {% endif %}
       </div>
     </article>
 </div>

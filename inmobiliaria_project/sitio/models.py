@@ -8,6 +8,7 @@ from django.urls import reverse
 from io import BytesIO
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage as storage  
+
 # Create your models here.
 #User._meta.get_field('email')._unique = True
 
@@ -32,7 +33,7 @@ class Publicacion(models.Model):
     tipo_propiedad = models.CharField(default='',max_length=20, choices=TIPO_PROPIEDAD)
     precio = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     habitaciones = models.PositiveIntegerField(default=1)
-    banos = models.PositiveIntegerField(default=1)
+    # ambientes = models.PositiveIntegerField(default=1)
     metros_cuadrados = models.PositiveIntegerField(default=1)
     direccion = models.CharField(default='', max_length=200)
     provincia = models.CharField(default='', max_length=200)
@@ -53,6 +54,7 @@ class Publicacion(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    favoritas = models.ManyToManyField('Publicacion', blank=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
