@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='publicacion',
-            name='ambientes',
+            name='banos',
             field=models.PositiveIntegerField(default=1),
         ),
         migrations.AddField(
