@@ -170,7 +170,7 @@ class PublicacionListView(ListView):
         # Obtén los parámetros de búsqueda de la URL
         precio_min = self.request.GET.get('precio_min')
         precio_max = self.request.GET.get('precio_max')
-        # ambientes = self.request.GET.get('ambientes')
+        ambientes = self.request.GET.get('ambientes')
         habitaciones = self.request.GET.get('habitaciones')
         tipo_operacion = self.request.GET.get('tipo_operacion')
         tipo_propiedad = self.request.GET.get('tipo_propiedad')
@@ -182,8 +182,8 @@ class PublicacionListView(ListView):
             queryset = queryset.filter(precio__gte=precio_min)
         if precio_max:
             queryset = queryset.filter(precio__lte=precio_max)
-        # if ambientes:
-        #     queryset = queryset.filter(ambientes=ambientes)
+        if ambientes:
+             queryset = queryset.filter(ambientes=ambientes)
         if habitaciones:
             queryset = queryset.filter(habitaciones=habitaciones)
         if tipo_operacion:
