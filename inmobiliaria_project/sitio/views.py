@@ -292,3 +292,16 @@ def FavoritosView(request, pk):
 def MisFavoritosView(request):
     favoritas = request.user.profile.favoritos.all()
     return render(request, 'ver_favoritos.html', {'favoritas': favoritas})
+
+def VerPerfilView(request, user_id):
+    usuario = get_object_or_404(User, id=user_id)
+    perfil = usuario.profile
+    publicaciones = Publicacion.objects.filter(autor=usuario)
+    
+    context = {
+        'usuario': usuario,
+        'perfil':perfil,
+        'publicaciones': publicaciones
+    }
+    
+    return render(request, 'ver_perfil.html', context)

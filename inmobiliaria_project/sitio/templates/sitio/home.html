@@ -7,16 +7,16 @@
   <form method="get">
     <input type="text" name="q" placeholder="Buscar...">
     <button type="submit">Buscar</button>
-    <div>
+    <div class="filter-select">
     <label for="tipo_operacion" class="sr-only">Tipo de operación:</label>
-      <select name="tipo_operacion" id="tipo_operacion" onchange="this.form.submit()">
+      <select name="tipo_operacion" id="tipo_operacion" class="filter-select" onchange="this.form.submit()">
         <option value="">Todos</option>
         <option value="venta" {% if request.GET.tipo_operacion == "venta" %}selected{% endif %}>Venta</option>
         <option value="alquiler" {% if request.GET.tipo_operacion == "alquiler" %}selected{% endif %}>Alquiler</option>
         <option value="temporada" {% if request.GET.tipo_operacion == "temporada" %}selected{% endif %}>Temporada</option>
       </select>
     <label for="tipo_propiedad" class="sr-only">Tipo de propiedad:</label>
-      <select name="tipo_propiedad" id="tipo_operacion"  onchange="this.form.submit()">
+      <select name="tipo_propiedad" id="tipo_operacion" class="filter-select" onchange="this.form.submit()">
         <option value="">Propiedad</option>
         <option value="departamento" {% if request.GET.tipo_propiedad == "departamento" %}selected{% endif %}>Departamento</option>
         <option value="casa" {% if request.GET.tipo_propiedad == "casa" %}selected{% endif %}>Casa</option>
@@ -52,14 +52,13 @@
       <img class="rounded-circle article-img" src="{{ publicacion.autor.profile.image.url }}">
       <div class="media-body">
         <div class="article-metadata">
-          <a class="mr-2" href="#">{{ publicacion.autor }}</a>
+          <a class="mr-2" href="{% url 'ver_perfil' user_id=publicacion.autor.id %}">{{ publicacion.autor }}</a>
           <small class="text-muted">{{ publicacion.fecha_creacion|date:"F d, Y" }}</small>
         </div>
         <h2><a class="article-title" href="{% url 'post-detail' publicacion.id %}">{{ publicacion.titulo }}</a></h2>
         <p class="article-content">{{ publicacion.descripcion }}</p>
 
         <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image">
-        <img class="publicacion-image" src="{{ publicacion.imagen_principal.url }}">
 
         <p>{{ publicacion.get_tipo_operacion_display }}</p>
         <p>{{ publicacion.get_tipo_propiedad_display}}</p>
