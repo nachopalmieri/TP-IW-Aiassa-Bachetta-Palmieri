@@ -64,15 +64,15 @@
         <p>{{ publicacion.get_tipo_operacion_display }}</p>
         <p>{{ publicacion.get_tipo_propiedad_display}}</p>
         <p>Precio: {{ publicacion.precio }}</p>
-        <p>Habitaciones: {{ publicacion.habitaciones }}</p>
-        <p>ambientes: {{ publicacion.ambientes }}</p>
+        <p>Dormitorios: {{ publicacion.habitaciones }}</p>
+        <p>Ambientes: {{ publicacion.ambientes }}</p>
         <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
         <p>Direccion: {{ publicacion.direccion }}</p>
         <p>Provincia: {{ publicacion.provincia }}</p>
         <p>Ciudad: {{ publicacion.ciudad }}</p>
 
         <div class="favorito-button">
-          {% if publicacion in request.user.profile.favoritas.all %}
+          {% if publicacion in request.user.profile.favoritos.all %}
               <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
           {% else %}
               <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>

@@ -28,7 +28,7 @@
         <p>Ciudad: {{ publicacion.ciudad }}</p>
 
         <div class="favorito-button">
-          {% if publicacion in request.user.profile.favoritas.all %}
+          {% if publicacion in request.user.profile.favoritos.all %}
               <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
           {% else %}
               <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>

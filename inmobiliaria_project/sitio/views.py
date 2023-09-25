@@ -281,14 +281,14 @@ def FavoritosView(request, pk):
     favorito = int(request.GET.get('favorito', 0))  # 1 si es favorito, 0 si no lo es
 
     if favorito:
-        request.user.profile.favoritas.remove(publicacion)
+        request.user.profile.favoritos.remove(publicacion)
     else:
-        request.user.profile.favoritas.add(publicacion)
+        request.user.profile.favoritos.add(publicacion)
 
     return redirect('home')
 
 
 @login_required
 def MisFavoritosView(request):
-    favoritas = request.user.profile.favoritas.all()
+    favoritas = request.user.profile.favoritos.all()
     return render(request, 'ver_favoritos.html', {'favoritas': favoritas})
