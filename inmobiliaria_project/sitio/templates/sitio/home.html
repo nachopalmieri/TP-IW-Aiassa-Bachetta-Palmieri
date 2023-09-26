@@ -83,7 +83,7 @@
             {% endif %}
           </div>
       </article>
-    {% elif publicacion.estado == 'pendiente' %}
+    {% elif publicacion.estado == 'pendiente' and publicacion.autor == user %}
         <div class="alert alert-info">
           Tu publicación "{{ publicacion.titulo }}" está pendiente de revisión. Será publicada después de la revisión.
         </div>
