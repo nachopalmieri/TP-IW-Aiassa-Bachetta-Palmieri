@@ -48,40 +48,46 @@
 </div>
 <div class="container">
   {% for publicacion in publicaciones %}
-    <article class="media content-section">
-      <img class="rounded-circle article-img" src="{{ publicacion.autor.profile.image.url }}">
-      <div class="media-body">
-        <div class="article-metadata">
-          {% if publicacion.autor == user %}
-            <a class="mr-2" href="{% url 'perfil' %}">{{ publicacion.autor }}</a>
-          {% else %}
-            <a class="mr-2" href="{% url 'ver_perfil' user_id=publicacion.autor.id %}">{{ publicacion.autor }}</a>
-        {% endif %}
-          <small class="text-muted">{{ publicacion.fecha_creacion|date:"F d, Y" }}</small>
-        </div>
-        <h2><a class="article-title" href="{% url 'post-detail' publicacion.id %}">{{ publicacion.titulo }}</a></h2>
-        <p class="article-content">{{ publicacion.descripcion }}</p>
-
-        <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image">
-
-        <p>{{ publicacion.get_tipo_operacion_display }}</p>
-        <p>{{ publicacion.get_tipo_propiedad_display}}</p>
-        <p>Precio: {{ publicacion.precio }}</p>
-        <p>Dormitorios: {{ publicacion.habitaciones }}</p>
-        <p>Ambientes: {{ publicacion.ambientes }}</p>
-        <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
-        <p>Direccion: {{ publicacion.direccion }}</p>
-        <p>Provincia: {{ publicacion.provincia }}</p>
-        <p>Ciudad: {{ publicacion.ciudad }}</p>
-
-        <div class="favorito-button">
-          {% if publicacion in request.user.profile.favoritos.all %}
-              <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
-          {% else %}
-              <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
+    {% if publicacion.estado == 'publicada' %}
+      <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ publicacion.autor.profile.image.url }}">
+        <div class="media-body">
+          <div class="article-metadata">
+            {% if publicacion.autor == user %}
+              <a class="mr-2" href="{% url 'perfil' %}">{{ publicacion.autor }}</a>
+            {% else %}
+              <a class="mr-2" href="{% url 'ver_perfil' user_id=publicacion.autor.id %}">{{ publicacion.autor }}</a>
           {% endif %}
+            <small class="text-muted">{{ publicacion.fecha_creacion|date:"F d, Y" }}</small>
+          </div>
+          <h2><a class="article-title" href="{% url 'post-detail' publicacion.id %}">{{ publicacion.titulo }}</a></h2>
+          <p class="article-content">{{ publicacion.descripcion }}</p>
+
+          <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image">
+
+          <p>{{ publicacion.get_tipo_operacion_display }}</p>
+          <p>{{ publicacion.get_tipo_propiedad_display}}</p>
+          <p>Precio: {{ publicacion.precio }}</p>
+          <p>Dormitorios: {{ publicacion.habitaciones }}</p>
+          <p>Ambientes: {{ publicacion.ambientes }}</p>
+          <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
+          <p>Direccion: {{ publicacion.direccion }}</p>
+          <p>Provincia: {{ publicacion.provincia }}</p>
+          <p>Ciudad: {{ publicacion.ciudad }}</p>
+
+          <div class="favorito-button">
+            {% if publicacion in request.user.profile.favoritos.all %}
+                <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
+            {% else %}
+                <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
+            {% endif %}
+          </div>
+      </article>
+    {% elif publicacion.estado == 'pendiente' %}
+        <div class="alert alert-info">
+          Tu publicación "{{ publicacion.titulo }}" está pendiente de revisión. Será publicada después de la revisión.
         </div>
-    </article>
+    {% endif %}
   {% endfor %}
 </div>
 {% endblock content %}

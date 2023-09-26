@@ -27,6 +27,14 @@ class Publicacion(models.Model):
         ('quinta','Quinta Vacacional')
     )
 
+    ESTADO = [
+        ('pendiente', 'Pendiente'),
+        ('publicada', 'Publicada'),
+        ('rechazada', 'Rechazada'),
+    ]
+    
+    estado = models.CharField(max_length=20, choices=ESTADO, default='pendiente')
+
     titulo = models.CharField(max_length=200)
     descripcion = models.TextField()
     tipo_operacion = models.CharField(default='',max_length=10, choices=TIPO_OPERACION)

@@ -210,6 +210,7 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
+        form.instance.estado = 'pendiente'
         return super().form_valid(form)
     
 #Editar publicaciones
