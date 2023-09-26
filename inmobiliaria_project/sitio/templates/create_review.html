@@ -1,0 +1,18 @@
+<!-- En tu archivo add_review.html -->
+
+{% extends "base.html" %}
+{% block content %}
+  <h2>Agregar reseña para {{ reviewed_user.username }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.title.id_for_label }}">Titulo:</label>
+      {{ form.title }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.description.id_for_label }}">Descripcion:</label>
+      {{ form.description }}
+    </div>
+    <button class="btn btn-outline-info" type="submit">Submit</button>
+  </form>
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
@@ -10,7 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 from .models import *
-from .forms import UserRegisterForm, InicioSesionForm, ProfileUpdateForm, UserUpdateForm
+from .forms import UserRegisterForm, InicioSesionForm, ProfileUpdateForm, UserUpdateForm, ReviewForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC, EmailAddress
 from allauth.account.utils import send_email_confirmation
@@ -293,15 +293,46 @@ def MisFavoritosView(request):
     favoritas = request.user.profile.favoritos.all()
     return render(request, 'ver_favoritos.html', {'favoritas': favoritas})
 
+@login_required
+@verified_email_required
 def VerPerfilView(request, user_id):
-    usuario = get_object_or_404(User, id=user_id)
-    perfil = usuario.profile
-    publicaciones = Publicacion.objects.filter(autor=usuario)
+    template_name = 'ver_perfil.html'
+    perfil_usuario = get_object_or_404(Profile, user__id=user_id)
+    publicaciones = Publicacion.objects.filter(autor=perfil_usuario.user)
+    reviews = Review.objects.filter(reviewed_user=perfil_usuario.user)
+
+    if request.method == "POST":
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.reviewer = request.user
+            review.reviewed_user = perfil_usuario.user
+            review.save()
+    else:
+        review_form = ReviewForm()
     
-    context = {
-        'usuario': usuario,
-        'perfil':perfil,
-        'publicaciones': publicaciones
-    }
+    return render(request, template_name, {
+        'usuario': perfil_usuario.user,
+        'perfil': perfil_usuario,
+        'publicaciones': publicaciones,
+        'review_form': review_form,
+        'reviews': reviews
+    })
+
+
+@login_required
+@verified_email_required
+def create_review(request, user_id):
+    user_to_review = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.reviewer = request.user
+            review.reviewed_user = user_to_review
+            review.save()
+            return redirect('profile', user_id=user_to_review)
+    else:
+        form = ReviewForm()
     
-    return render(request, 'ver_perfil.html', context)
+    return render(request, 'create_review.html', {'form': form, 'user_to_review': user_to_review})

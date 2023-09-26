@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% load crispy_forms_tags %}
 {% include "nav.html" %}
 <div class="profile-header">
     <h1>{{ usuario.username }}</h1>
@@ -21,7 +22,32 @@
           <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image">
       </article>
     {% endfor %}
-</div>
+
+    <h2>Opiniones de sus clientes</h2>
+    <ul>
+        {% for review in reviews %}
+            <strong>{{ review.title }}</strong><br>
+            <p>{{ review.description }}</p>
+        {% endfor %}
+    </ul>
+
+    <h2>Crear una Nueva Reseña</h2>
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="{{ review_form.title.id_for_label }}"></label>
+            {{ review_form.title }}
+            <br>
+            <label for="{{ review_form.description.id_for_label }}"></label>
+            <textarea id="{{ review_form.description.id_for_label }}" name="{{ review_form.description.html_name }}" placeholder="Escribe tu reseña aquí..." rows="6" cols="40">{{ review_form.description.value|default_if_none:"" }}</textarea>
+            <br>
+            <div class="favorito-button">
+            <button class="btn-outline-custom" type="submit">Crear Reseña</button>
+            </div>
+        </form>
+    </div>
+    
 {% endblock content %}
+
 
 

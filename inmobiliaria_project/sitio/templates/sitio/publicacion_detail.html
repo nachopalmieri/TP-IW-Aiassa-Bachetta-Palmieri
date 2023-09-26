@@ -10,9 +10,9 @@
           <a class="mr-2" href="#">{{ object.autor }}</a>
           <small class="text-muted">{{ object.fecha_creacion|date:"F d, Y" }}</small>
           {% if object.autor == user %}
-            <div>
+            <div class="favorito-button">
               <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Actualizar</a>
-              <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Eliminar</a>
+              <a class="btn btn-danger btn-sm" href="{% url 'post-delete' object.id %}">Eliminar</a>
             </div>
           {% endif %}
         </div>

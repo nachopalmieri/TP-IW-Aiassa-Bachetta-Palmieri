@@ -95,4 +95,25 @@ def save(self, *args, **kwargs):
         image.show()
         image_read.close()
 
+class Review(models.Model):
+    CHOICES = [
+        ('Buena', 'Buena'),
+        ('Regular', 'Regular'),
+        ('Mala', 'Mala'),
+    ]
+
+    reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
+    reviewed_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    title = models.CharField(max_length=50, choices=CHOICES)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"Reseña realizada por {self.reviewer.username} para {self.reviewed_user.username}"
+
+
+
+
+
+
+
 

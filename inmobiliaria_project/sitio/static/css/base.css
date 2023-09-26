@@ -307,6 +307,7 @@ a{
 }
 
 .navbar {
+    background-color: rgb(243, 247, 248);
     padding-bottom: -50px; /* Ajusta el espacio en blanco inferior */
     margin-bottom: 0; /* Ajusta el margen inferior */
 }
@@ -317,9 +318,20 @@ a{
 }
 
 .favorito-button a:hover {
+    background-color: #006d5c;
+    color: #000000;
+}
+
+/* Estilos para los botones Eliminar y Deshacer Favorito */
+.favorito-button a.btn-danger {
     background-color: #6d000086;
     color: #000000;
 }
+
+.favorito-button a.btn-danger:hover {
+    background-color: #6d000086;
+}
+
 
   
 
