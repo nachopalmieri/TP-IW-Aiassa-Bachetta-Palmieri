@@ -3,6 +3,11 @@
 {% include "nav.html" %}
 {% include "alerts.html" %}
 <div class="container">
+  {% if object.estado == 'pendiente' and object.autor == user %}
+    <div class="alert alert-info">
+      Tu publicación "{{ object.titulo }}" está pendiente de revisión. Será publicada después de la revisión.
+    </div>
+  {% endif %}
     <article class="media content-section">
       <img class="rounded-circle article-img" src="{{ object.autor.profile.image.url }}">
       <div class="media-body">
