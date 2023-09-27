@@ -206,7 +206,7 @@ class PublicacionDetailView(DetailView):
 class PublicacionCreateView(LoginRequiredMixin, CreateView):
     model = Publicacion
     fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones',
-              'metros_cuadrados','direccion','provincia','ciudad','imagen_principal'] #ambientes
+              'metros_cuadrados','direccion','provincia','ciudad','ambientes','imagen_principal','ambientes','image2','image3','image4']
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
@@ -218,7 +218,7 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
 class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Publicacion
     fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones',
-              'metros_cuadrados','direccion','provincia','ciudad','imagen_principal'] #ambientes,
+              'metros_cuadrados','direccion','provincia','ciudad','ambientes','imagen_principal','image2','image3','image4']
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
@@ -325,6 +325,7 @@ def VerPerfilView(request, user_id):
 @verified_email_required
 def create_review(request, user_id):
     user_to_review = get_object_or_404(User, id=user_id)
+    
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():

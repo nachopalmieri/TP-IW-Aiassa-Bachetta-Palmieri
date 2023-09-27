@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% load crispy_forms_tags %}
+{% include "alerts.html" %}
 {% include "nav.html" %}
 <div class="profile-header">
     <h1>{{ usuario.username }}</h1>
@@ -26,6 +27,7 @@
     <h2>Opiniones de sus clientes</h2>
     <ul>
         {% for review in reviews %}
+            <small class="text-muted">{{ review.fecha_creacion|date:"F d, Y" }}</small> <br>
             <strong>{{ review.title }}</strong><br>
             <p>{{ review.description }}</p>
         {% endfor %}

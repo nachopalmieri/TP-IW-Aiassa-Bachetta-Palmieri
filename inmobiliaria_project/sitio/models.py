@@ -117,6 +117,7 @@ class Review(models.Model):
     reviewed_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     title = models.CharField(max_length=50, choices=CHOICES)
     description = models.TextField()
+    fecha_creacion = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"Reseña realizada por {self.reviewer.username} para {self.reviewed_user.username}"
