@@ -26,7 +26,6 @@ urlpatterns = [
     path('toggle_favorito/<int:pk>/', views.FavoritosView, name='toggle_favorito'),
     path('ver_perfil/<int:user_id>/', views.VerPerfilView, name='ver_perfil'),
 
-
 #URLS de la aplicacion de restaurar password
     path('reset_password/', views.CustomPasswordResetView.as_view(), name='password_reset'),
     path('reset_password/done/', auth_views.PasswordResetDoneView.as_view(template_name = 'users/reset_password/password_reset_done.html'), name='password_reset_done'),

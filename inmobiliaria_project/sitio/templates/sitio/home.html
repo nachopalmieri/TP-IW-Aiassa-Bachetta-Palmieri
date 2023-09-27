@@ -57,13 +57,30 @@
               <a class="mr-2" href="{% url 'perfil' %}">{{ publicacion.autor }}</a>
             {% else %}
               <a class="mr-2" href="{% url 'ver_perfil' user_id=publicacion.autor.id %}">{{ publicacion.autor }}</a>
-          {% endif %}
+            {% endif %}
             <small class="text-muted">{{ publicacion.fecha_creacion|date:"F d, Y" }}</small>
           </div>
           <h2><a class="article-title" href="{% url 'post-detail' publicacion.id %}">{{ publicacion.titulo }}</a></h2>
           <p class="article-content">{{ publicacion.descripcion }}</p>
 
-          <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}" class="publicacion-image">
+          <div class="swiper">
+              <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                      <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}">
+                  </div>
+                  <div class="swiper-slide">
+                      <img src="{{ publicacion.image2.url }}" alt="{{ publicacion.titulo }}">
+                  </div>
+                  <div class="swiper-slide">
+                      <img src="{{ publicacion.image3.url }}" alt="{{ publicacion.titulo }}">
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="{{ publicacion.image4.url }}" alt="{{ publicacion.titulo }}">
+                  </div>
+              </div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+          </div>
 
           <p>{{ publicacion.get_tipo_operacion_display }}</p>
           <p>{{ publicacion.get_tipo_propiedad_display}}</p>
@@ -82,6 +99,7 @@
                 <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
             {% endif %}
           </div>
+        </div>
       </article>
     {% elif publicacion.estado == 'pendiente' and publicacion.autor == user %}
         <div class="alert alert-info">
@@ -90,6 +108,7 @@
     {% endif %}
   {% endfor %}
 </div>
+
 {% endblock content %}
 
 

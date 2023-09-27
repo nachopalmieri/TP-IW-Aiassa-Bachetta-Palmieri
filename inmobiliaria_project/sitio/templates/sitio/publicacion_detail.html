@@ -12,7 +12,11 @@
       <img class="rounded-circle article-img" src="{{ object.autor.profile.image.url }}">
       <div class="media-body">
         <div class="article-metadata">
-          <a class="mr-2" href="#">{{ object.autor }}</a>
+          {% if object.autor == user %}
+          <a class="mr-2" href="{% url 'perfil' %}">{{ object.autor }}</a>
+        {% else %}
+          <a class="mr-2" href="{% url 'ver_perfil' user_id=object.autor.id %}">{{ object.autor }}</a>
+        {% endif %}
           <small class="text-muted">{{ object.fecha_creacion|date:"F d, Y" }}</small>
           {% if object.autor == user %}
             <div class="favorito-button">
