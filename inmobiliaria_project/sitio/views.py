@@ -17,6 +17,7 @@ from allauth.account.utils import send_email_confirmation
 #from .decorators import email_verified_required
 from allauth.account.decorators import verified_email_required
 from django.utils.decorators import method_decorator
+import folium
 
 #Vistas para el sitio - USERS
 
@@ -200,13 +201,28 @@ class PublicacionListView(ListView):
 #Detalle de publicaciones
 class PublicacionDetailView(DetailView):
     model = Publicacion
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Obtiene las coordenadas de la propiedad actual
+        latitud = self.object.latitud if self.object.latitud else -38.416097
+        longitud = self.object.longitud if self.object.longitud else -63.616672
+
+        # Crea el mapa centrado en la ubicación de la propiedad
+        property_map = folium.Map(location=[latitud, longitud], zoom_start=15)
+        folium.Marker([latitud, longitud], popup='Ubicación de la propiedad').add_to(property_map)
+
+        # Convierte el mapa a HTML para poder mostrarlo en la plantilla
+        property_map_html = property_map._repr_html_()
+        context['property_map'] = property_map_html
+
+        return context
 
 #Crear publicaciones
 @method_decorator(verified_email_required, name='dispatch')
 class PublicacionCreateView(LoginRequiredMixin, CreateView):
     model = Publicacion
-    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones',
-              'metros_cuadrados','direccion','provincia','ciudad','ambientes','imagen_principal','ambientes','image2','image3','image4']
+    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio', 'expensas', 'habitaciones',
+              'metros_cuadrados','ambientes','banios','provincia','ciudad','latitud','longitud','direccion','imagen_principal','image2','image3','image4']
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
@@ -217,8 +233,8 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
 @method_decorator(verified_email_required, name='dispatch')
 class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Publicacion
-    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio','habitaciones',
-              'metros_cuadrados','direccion','provincia','ciudad','ambientes','imagen_principal','image2','image3','image4']
+    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio', 'expensas', 'habitaciones',
+              'metros_cuadrados','ambientes','banios','provincia','ciudad','latitud','longitud','direccion','imagen_principal','image2','image3','image4']
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
@@ -285,8 +301,8 @@ def FavoritosView(request, pk):
         request.user.profile.favoritos.remove(publicacion)
     else:
         request.user.profile.favoritos.add(publicacion)
-
-    return redirect('home')
+    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required

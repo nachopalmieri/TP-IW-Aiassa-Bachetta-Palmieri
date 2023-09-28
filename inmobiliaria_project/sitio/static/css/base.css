@@ -318,7 +318,7 @@ a{
 }
 
 .favorito-button a:hover {
-    background-color: #006d5c;
+    background-color: #6d000086;;
     color: #000000;
 }
 
@@ -332,8 +332,129 @@ a{
     background-color: #6d000086;
 }
 
+.botones-container {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+}
 
+.contactar-button {
+    margin-left: auto; /* Mueve el botón "Contactar" al extremo derecho */
+}
 
+.contactar-button:hover {
+    background-color: #006d5d4d;
+    color: #000000;
+}
+
+.titlebar{
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    font-family: "Open Sans",sans-serif;
+    text-transform: none;
+    font-size: 24px;
+    line-height: 33px;
+    font-weight: 700;
+    color: var(--green);
+    text-decoration: none;
+    margin: 0;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 430px;
+    transition: var(--transition);
+}
+
+.titlebar:hover {
+    color: #006d5d4d;
+}
+
+.titlebar-title{
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    font-family: "Open Sans",sans-serif;
+    text-transform: none;
+    margin: 0;
+    font-size: 18px;
+    line-height: 24px;
+    color: #647881;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    
+}
+.card__price{
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    font-weight: 700;
+    color: #3b4043;
+    font-size: 20px;
+    line-height: 27px;
+}
+.card__currency{
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    color: inherit;
+    font-size: inherit;
+}
+.card__expenses{
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    color: #647881;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+}
+.titlebar-sub{
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    font-family: "Open Sans",sans-serif;
+    text-transform: none;
+    margin: 16px 0 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: #3b4043;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Estilo para las imágenes en la galería */
+.swiper-slide img {
+    max-width: 100%; /* Tamaño máximo del ancho igual al contenedor */
+    max-height: 100%; /* Tamaño máximo de la altura igual al contenedor */
+    object-fit: cover; /* La imagen se ajusta proporcionalmente y cubre el contenedor */
+  }
   
 
 

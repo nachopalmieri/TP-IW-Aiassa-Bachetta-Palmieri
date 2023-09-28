@@ -58,48 +58,77 @@
             {% else %}
               <a class="mr-2" href="{% url 'ver_perfil' user_id=publicacion.autor.id %}">{{ publicacion.autor }}</a>
             {% endif %}
-            <small class="text-muted">{{ publicacion.fecha_creacion|date:"F d, Y" }}</small>
+            <small class="text-muted">
+              <a href="{% url 'post-detail' publicacion.id %}" style="text-decoration: none; color: inherit;">
+                {{ publicacion.fecha_creacion|date:"F d, Y" }}
+              </a>
+            </small>
           </div>
-          <h2><a class="article-title" href="{% url 'post-detail' publicacion.id %}">{{ publicacion.titulo }}</a></h2>
-          <p class="article-content">{{ publicacion.descripcion }}</p>
-
+          <div>
+          <h1 class="titlebar">
+            <a href="{% url 'post-detail' publicacion.id %}" style="text-decoration: none; color: inherit;">
+              {{ publicacion.titulo }}
+            </a>
+          </h1>
+          <br>
+          <p class="card__price">
+            <span class="card__currency">$</span> {{ publicacion.precio }}
+            <span class="card__expenses"> + {{ publicacion.expensas }} expensas</span>
+          </p>
+          <div>
+            <p class="titlebar">
+              <a href="{% url 'post-detail' publicacion.id %}" style="text-decoration: none; color: inherit;">
+                {{ publicacion.direccion }},{{ publicacion.ciudad }}, {{ publicacion.provincia }}
+              </a>
+            </p>
+          </div>
           <div class="swiper">
-              <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                      <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}">
-                  </div>
-                  <div class="swiper-slide">
-                      <img src="{{ publicacion.image2.url }}" alt="{{ publicacion.titulo }}">
-                  </div>
-                  <div class="swiper-slide">
-                      <img src="{{ publicacion.image3.url }}" alt="{{ publicacion.titulo }}">
-                  </div>
-                  <div class="swiper-slide">
-                    <img src="{{ publicacion.image4.url }}" alt="{{ publicacion.titulo }}">
-                  </div>
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <a href="{% url 'post-detail' publicacion.id %}" style="text-decoration: none; color: inherit;">
+                  <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}">
+                </a>
               </div>
-              <div class="swiper-button-next"></div>
-              <div class="swiper-button-prev"></div>
+              <div class="swiper-slide">
+                <a href="{% url 'post-detail' publicacion.id %}" style="text-decoration: none; color: inherit;">
+                  <img src="{{ publicacion.image2.url }}" alt="{{ publicacion.titulo }}">
+                </a>
+              </div>
+              <div class="swiper-slide">
+                <a href="{% url 'post-detail' publicacion.id %}" style="text-decoration: none; color: inherit;">
+                  <img src="{{ publicacion.image3.url }}" alt="{{ publicacion.titulo }}">
+                </a>
+              </div>
+              <div class="swiper-slide">
+                <a href="{% url 'post-detail' publicacion.id %}" style="text-decoration: none; color: inherit;">
+                  <img src="{{ publicacion.image4.url }}" alt="{{ publicacion.titulo }}">
+                </a>
+              </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
           </div>
-
-          <p>{{ publicacion.get_tipo_operacion_display }}</p>
-          <p>{{ publicacion.get_tipo_propiedad_display}}</p>
-          <p>Precio: {{ publicacion.precio }}</p>
-          <p>Dormitorios: {{ publicacion.habitaciones }}</p>
-          <p>Ambientes: {{ publicacion.ambientes }}</p>
-          <p>Metros Cuadrados: {{ publicacion.metros_cuadrados }}</p>
-          <p>Direccion: {{ publicacion.direccion }}</p>
-          <p>Provincia: {{ publicacion.provincia }}</p>
-          <p>Ciudad: {{ publicacion.ciudad }}</p>
-
-          <div class="favorito-button">
-            {% if publicacion in request.user.profile.favoritos.all %}
-                <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
-            {% else %}
-                <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
-            {% endif %}
+          <br>
+          <i class="fas fa-bed"></i> {{ publicacion.habitaciones }} dorm.
+          <i class="fas fa-door-open"> </i>{{ publicacion.ambientes }} amb.
+          <i class="fas fa-square"></i> {{ publicacion.metros_cuadrados }} m²
+          <i class="fas fa-toilet"></i> {{ publicacion.banios }} baño
+          <br>
+          <br>
+          <div class="botones-container">
+            <div class="favorito-button">
+              {% if publicacion in request.user.profile.favoritos.all %}
+                  <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
+              {% else %}
+                  <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
+              {% endif %}
+            </div>
+            <div class="contactar-button">
+              <a href="https://wa.me/5493492569283/?text=Hola, vi esta propiedad en TuLugar y quiero más información por WhatsApp. https://tulugar.onrender.com/propiedad/{{ publicacion.id }}/" target="_blank" class="btn btn-success btn-sm">
+                <i class="fab fa-whatsapp"></i> Contactar
+              </a>
+            </div>
           </div>
-        </div>
       </article>
     {% elif publicacion.estado == 'pendiente' and publicacion.autor == user %}
         <div class="alert alert-info">

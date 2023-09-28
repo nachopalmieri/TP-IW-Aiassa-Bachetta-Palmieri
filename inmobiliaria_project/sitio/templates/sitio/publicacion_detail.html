@@ -8,15 +8,15 @@
       Tu publicación "{{ object.titulo }}" está pendiente de revisión. Será publicada después de la revisión.
     </div>
   {% endif %}
-    <article class="media content-section">
+  <article class="media content-section">
       <img class="rounded-circle article-img" src="{{ object.autor.profile.image.url }}">
       <div class="media-body">
         <div class="article-metadata">
           {% if object.autor == user %}
-          <a class="mr-2" href="{% url 'perfil' %}">{{ object.autor }}</a>
-        {% else %}
-          <a class="mr-2" href="{% url 'ver_perfil' user_id=object.autor.id %}">{{ object.autor }}</a>
-        {% endif %}
+            <a class="mr-2" href="{% url 'perfil' %}">{{ object.autor }}</a>
+          {% else %}
+            <a class="mr-2" href="{% url 'ver_perfil' user_id=object.autor.id %}">{{ object.autor }}</a>
+          {% endif %}
           <small class="text-muted">{{ object.fecha_creacion|date:"F d, Y" }}</small>
           {% if object.autor == user %}
             <div class="favorito-button">
@@ -25,28 +25,62 @@
             </div>
           {% endif %}
         </div>
-        <h2 class="article-title"> {{ object.titulo }} </h2>
-        <p class="article-content">{{ object.descripcion }}</p>
-        
-        <img src="{{ object.imagen_principal.url }}" alt="{{ object.titulo }}" class="publicacion-image">
-
-        <p>{{ object.get_tipo_propiedad_display }}</p>
-        <p>{{ object.get_tipo_operacion_display}}</p>
-        <p>Precio: {{ object.precio }}</p>
-        <p>Habitaciones: {{ object.habitaciones }}</p>
-        <p>Ambientes: {{ object.ambientes }}</p>
-        <p>Metros Cuadrados: {{ object.metros_cuadrados }}</p>
-        <p>Direccion: {{ object.direccion }}</p>
-        <p>Provincia: {{ object.provincia }}</p>
-        <p>Ciudad: {{ object.ciudad }}</p>
-      </div>
-      <div class="favorito-button">
-        {% if publicacion in request.user.profile.favoritos.all %}
-            <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
-        {% else %}
-            <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
-        {% endif %}
-      </div>
+        <div>
+        <h1 class="titlebar"><a href="{% url 'post-detail' object.id %}">{{ object.titulo }}</a></h1>
+        <br>
+        <p class="titlebar"> {{ publicacion.get_tipo_propiedad_display }} en {{ publicacion.get_tipo_operacion_display }} en {{ publicacion.ciudad }}, {{ publicacion.provincia }} </p>
+        <br>
+        <p class="card__price">
+          <span class="card__currency">$</span> {{ object.precio }}
+          <span class="card__expenses"> + {{ object.expensas }} expensas</span>
+        </p>
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="{{ object.imagen_principal.url }}" alt="{{ object.titulo }}">
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ object.image2.url }}" alt="{{ object.titulo }}">
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ object.image3.url }}" alt="{{ object.titulo }}">
+                </div>
+                <div class="swiper-slide">
+                  <img src="{{ object.image4.url }}" alt="{{ object.titulo }}">
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+        <br>
+        <i class="fas fa-bed"></i> {{ object.habitaciones }} dorm.
+        <i class="fas fa-door-open"> </i>{{ object.ambientes }} amb.
+        <i class="fas fa-square"></i> {{ object.metros_cuadrados }} m²
+        <i class="fas fa-toilet"></i> {{ publicacion.banios }} baño
+        <br>
+        <br>
+        <h3 class="titlebar"> Ubicación </h3>
+        <hr>
+        <div>
+          <p class="titlebar"> {{ object.direccion }},{{ object.ciudad }}, {{ object.provincia }} </p>
+        </div>
+        {{ property_map|safe}}
+        <br>
+        <div class="botones-container">
+          <div class="favorito-button">
+            {% if object in request.user.profile.favoritos.all %}
+                <a href="{% url 'toggle_favorito' object.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
+            {% else %}
+                <a href="{% url 'toggle_favorito' object.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
+            {% endif %}
+          </div>
+          <div class="contactar-button">
+            <a href="https://wa.me/5493492569283/?text=Hola, vi esta propiedad en TuLugar y quiero más información por WhatsApp. https://tulugar.onrender.com/propiedad/{{ object.id }}/" target="_blank" class="btn btn-success btn-sm">
+              <i class="fab fa-whatsapp"></i> Contactar
+            </a>
+          </div>
+        </div>
     </article>
 </div>
+
 {% endblock content %}

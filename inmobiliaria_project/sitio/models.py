@@ -53,6 +53,10 @@ class Publicacion(models.Model):
     fecha_creacion = models.DateTimeField(default=timezone.now)
     fecha_actualizado = models.DateTimeField(auto_now=True)
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    latitud = models.FloatField(null=True, blank=True)
+    longitud = models.FloatField(null=True, blank=True)
+    expensas = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+    banios = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return self.titulo
