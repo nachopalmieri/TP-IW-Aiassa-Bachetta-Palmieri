@@ -97,31 +97,6 @@ def LoginView(request):
     return render(request, 'users/registration/login.html', context)
 
 
-#- PERFIL DE USUARIO
-@login_required
-@verified_email_required
-def PerfilView(request):
-    if request.method == "POST":
-        u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST,
-                                   request.FILES,
-                                   instance=request.user.profile)
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            messages.success(request, f'Tu perfil ha sido actualizado.')
-            return redirect('perfil')
-    else:
-        u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
-
-    context = {
-        'u_form': u_form,
-        'p_form': p_form
-    }
-    return render(request,'users/profile.html', context)
-
-
 #RESTAURACION DE USUARIOS
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'users/reset_password/password_reset.html'
@@ -312,11 +287,50 @@ def MisFavoritosView(request):
 
 @login_required
 @verified_email_required
+def PerfilView(request):
+    if request.method == "POST":
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Tu perfil ha sido actualizado.')
+            return redirect('perfil')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    # Obtener las publicaciones y reseñas del usuario
+    publicaciones = Publicacion.objects.filter(autor=request.user)
+
+    # Calcular estadísticas de reputación
+    reseñas = Review.objects.filter(reviewed_user=request.user).order_by('-fecha_creacion')
+    total_reputaciones = reseñas.count()
+    reseñas_buenas = reseñas.filter(title='Buena').count()
+    reseñas_regulares = reseñas.filter(title='Regular').count()
+    reseñas_malas = reseñas.filter(title='Mala').count()
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form,
+        'publicaciones': publicaciones,
+        'reviews': reseñas,
+        'total_reputaciones': total_reputaciones,
+        'reseñas_buenas': reseñas_buenas,
+        'reseñas_regulares': reseñas_regulares,
+        'reseñas_malas': reseñas_malas
+    }
+    return render(request, 'users/profile.html', context)
+
+@login_required
+@verified_email_required
 def VerPerfilView(request, user_id):
     template_name = 'ver_perfil.html'
     perfil_usuario = get_object_or_404(Profile, user__id=user_id)
     publicaciones = Publicacion.objects.filter(autor=perfil_usuario.user)
-    reviews = Review.objects.filter(reviewed_user=perfil_usuario.user)
+    reviews = Review.objects.filter(reviewer=request.user).order_by('-fecha_creacion')
 
     if request.method == "POST":
         review_form = ReviewForm(request.POST)

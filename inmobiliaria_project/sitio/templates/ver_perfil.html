@@ -24,16 +24,8 @@
       </article>
     {% endfor %}
 
-    <h2>Opiniones de sus clientes</h2>
-    <ul>
-        {% for review in reviews %}
-            <small class="text-muted">{{ review.fecha_creacion|date:"F d, Y" }}</small> <br>
-            <strong>{{ review.title }}</strong><br>
-            <p>{{ review.description }}</p>
-        {% endfor %}
-    </ul>
-
     <h2>Crear una Nueva Reseña</h2>
+    <hr>
     <div class="content-section">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -48,7 +40,17 @@
             </div>
         </form>
     </div>
-    
+
+    <h2>Opiniones de sus clientes</h2>
+    <hr>
+    <ul>
+        {% for review in reviews %}
+            <small class="text-muted">{{ review.fecha_creacion|date:"F d, Y" }}</small> <br>
+            <strong>{{ review.title }}</strong><br>
+            <p>{{ review.description }}</p>
+        {% endfor %}
+    </ul>
+
 {% endblock content %}
 
 

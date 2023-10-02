@@ -1,35 +1,231 @@
 {% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
 {% block content %}
-<html>
-<body>
-  {% include "nav.html" %}
-  {% include "alerts.html"%}
-  
-  <div class="content-section user_card">
-    {% if user.is_authenticated %}
-    <div class="media">
-      <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
-      <div class="media-body">
-        <h2 class="account-heading">{{ user.username }}</h2>
-        <p class="text-secondary">{{ user.email }}</p>
+{% load crispy_forms_tags %}
+{% include "nav.html" %}
+{% include "alerts.html" %}
+
+<body class="woocommerce-account">
+    <nav class="woocommerce-MyAccount-navigation">
+        <ul>
+            <li>
+                <a href="#" onclick="showSection('datos')" class="menu-item active">Datos</a>
+            </li>
+            <li>
+              <a href="/reset_password/" onclick="showSection('contraseña')" class="menu-item">Cambiar contraseña</a>
+            </li>
+            <li>
+                <a href="#" onclick="showSection('publicaciones')" class="menu-item">Mis publicaciones</a>
+            </li>
+            <li>
+                <a href="#" onclick="showSection('reputacion')" class="menu-item">Reputación</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div id="section_datos" class="profile-section">
+            <div class="content-section user_card-2">
+                {% if user.is_authenticated %}
+                <div class="media">
+                    <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+                    <div class="media-body">
+                        <h2 class="account-heading">{{ user.username }}</h2>
+                        <p class="text-secondary">{{ user.email }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                <form method="POST" enctype="multipart/form-data" class="form_container">
+                    {% csrf_token %}
+                    <fieldset class="form-group content-section">
+                        <legend id="form-title">Mi perfil</legend>
+                        {{ u_form|crispy }}
+                        {{ p_form|crispy }}
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-outline-info login_btn" type="submit">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="section_publicaciones" class="profile-section" style="display: none;">
+            <div class="container">
+                <h2>Mis publicaciones</h2>
+                <hr>
+                {% for publicacion in publicaciones %}
+                <article class="media content-section">
+                    <img class="rounded-circle article-img" src="{{ publicacion.autor.profile.image.url }}">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <a class="mr-2" href="{% url 'perfil' %}">{{ publicacion.autor }}</a>
+                            <small class="text-muted">{{ publicacion.fecha_creacion|date:"F d, Y" }}</small>
+                            <div class="favorito-button">
+                                <a class="btn btn-secondary btn-sm mt-1 mb-1"
+                                    href="{% url 'post-update' publicacion.id %}">Actualizar</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'post-delete' publicacion.id %}">Eliminar</a>
+                            </div>
+                        </div>
+                        <div>
+                            <h1 class="titlebar">{{ publicacion.titulo }}</h1>
+                            <br>
+                            <p class="titlebar"> {{ publicacion.get_tipo_propiedad_display }} en
+                                {{ publicacion.get_tipo_operacion_display }} en {{ publicacion.ciudad }},
+                                {{ publicacion.provincia }} </p>
+                            <br>
+                            <p class="card__price">
+                                <span class="card__currency">$</span> {{ publicacion.precio }}
+                                <span class="card__expenses"> + {{ publicacion.expensas }} expensas</span>
+                            </p>
+                            <p class="text-muted"> {{ publicacion.descripcion|linebreaksbr }}</p>
+                            <div class="swiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <img src="{{ publicacion.imagen_principal.url }}" alt="{{ publicacion.titulo }}">
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img src="{{ publicacion.image2.url }}" alt="{{ publicacion.titulo }}">
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img src="{{ publicacion.image3.url }}" alt="{{ publicacion.titulo }}">
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img src="{{ publicacion.image4.url }}" alt="{{ publicacion.titulo }}">
+                                    </div>
+                                </div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                            <br>
+                            <i class="fas fa-bed"></i> {{ publicacion.habitaciones }} dorm.
+                            <i class="fas fa-door-open"> </i>{{ publicacion.ambientes }} amb.
+                            <i class="fas fa-square"></i> {{ publicacion.metros_cuadrados }} m²
+                            <i class="fas fa-toilet"></i> {{ publicacion.banios }} baño
+                            <br>
+                            <br>
+                            <h3 class="titlebar"> Ubicación </h3>
+                            <hr>
+                            <div>
+                                <p class="titlebar"> {{ publicacion.direccion }},{{ publicacion.ciudad }},
+                                    {{ publicacion.provincia }} </p>
+                            </div>
+                            {{ property_map|safe}}
+                            <br>
+                            <br>
+                            <h3 class="titlebar"> Características </h3>
+                            <hr>
+                            <ul id="section_1" class="property-features ">
+                                <li>
+                                    <p>
+                                        Cant. Ambientes:
+                                        <strong>
+                                            {{ publicacion.ambientes }}
+                                        </strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        Cant. Dormitorios:
+                                        <strong>
+                                            {{ publicacion.habitaciones }}
+                                        </strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        Cant. Baños:
+                                        <strong>
+                                            {{ publicacion.banios }}
+                                        </strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        Metros cuadrados:
+                                        <strong>
+                                            {{ publicacion.metros_cuadrados}}
+                                        </strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        Expensas:
+                                        <strong>
+                                            {{ publicacion.expensas}}
+                                        </strong>
+                                    </p>
+                                </li>
+                            </ul>
+                            <br>
+                            <h3 class="titlebar"> Datos básicos </h3>
+                            <hr>
+                            <ul id="section_1" class="property-features ">
+                                <li>
+                                    <p>
+                                        Tipo de operación:
+                                        <strong>
+                                            {{ publicacion.tipo_operacion }}
+                                        </strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        Precio:
+                                        <strong>
+                                            {{ publicacion.precio }}
+                                        </strong>
+                                    </p>
+                                </li>
+                            </ul>
+                            <br>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="section_reputacion" class="profile-section" style="display: none;">
+          <h2>Reputación</h2>
+          <hr>
+          <div class="reputation-stats">
+              <p>Total de Reputaciones: <strong> {{ total_reputaciones }} </strong> </p>
+              <p>Reputaciones Buenas: <strong> {{ reseñas_buenas }}</strong> </p>
+              <p>Reputaciones Malas: <strong> {{ reseñas_malas }}</strong> </p>
+              <p>Reputaciones Regulares: <strong> {{ reseñas_regulares }} </strong> </p>
+          </div>
+      
+          <ul>
+              {% for review in reviews %}
+              <li>
+                  <small class="text-muted">{{ review.fecha_creacion|date:"F d, Y" }}</small> <br>
+                  <strong>{{ review.title }}</strong><br>
+                  <p>{{ review.description }}</p>
+              </li>
+              {% endfor %}
+          </ul>
       </div>
     </div>
-    {% endif %}
-    <form method="POST" enctype="multipart/form-data" class="form_container">
-      {% csrf_token %}
-      <fieldset class="form-group content-section">
-        <legend id="form-title">Mi perfil</legend>
-        {{ u_form|crispy }}
-        {{ p_form|crispy }}
-      </fieldset>
-      <div class="form-group">
-        <button class="btn btn-outline-info login_btn" type="submit">Actualizar</button>
-      </div>
-    </form>
-  </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.profile-section').forEach(function(el) {
+                el.style.display = 'none';
+            });
+
+            // Desmarcar todos los elementos del menú
+            document.querySelectorAll('.menu-item').forEach(function(el) {
+                el.classList.remove('active');
+            });
+
+            // Mostrar la sección seleccionada
+            document.getElementById('section_' + sectionId).style.display = 'block';
+
+            // Marcar el elemento del menú como activo
+            document.querySelector('.menu-item[href="#"]').classList.add('active');
+        }
+    </script>
 </body>
-</html>
-</html>
 {% endblock content %}
+
+

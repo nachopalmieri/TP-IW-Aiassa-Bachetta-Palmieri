@@ -498,6 +498,57 @@ a{
     transition: all .3s ease;
   }
 
+  /* Estilo para cada ítem de navegación */
+.woocommerce-account nav.woocommerce-MyAccount-navigation ul li {
+    list-style-type: none;
+    margin-bottom: 5px; /* Reduce el espacio entre ítems */
+}
+
+/* Establece un fondo y un borde para cada ítem */
+.woocommerce-account nav.woocommerce-MyAccount-navigation ul li a {
+    display: block;
+    padding: 10px 15px; 
+    background-color: #f0f0f0; 
+    border: 1px solid #000000; 
+    border-radius: 5px; 
+    text-decoration: none;
+    color: #666;
+    width: 15%; 
+    margin-top: 10px;
+}
+
+/* Estilo para el enlace del ítem activo y en hover */
+.woocommerce-account nav.woocommerce-MyAccount-navigation ul li.is-active a,
+.woocommerce-account nav.woocommerce-MyAccount-navigation ul li a:hover {
+    background-color: var(--green); /* Cambia el color de fondo al hacer hover o al estar activo */
+    color: #fff; /* Cambia el color del texto al hacer hover o al estar activo */
+}
+
+/* Alinea los ítems al borde izquierdo */
+.woocommerce-account nav.woocommerce-MyAccount-navigation ul li a {
+    margin-left: 0; /* Elimina el margen izquierdo para alinear al borde izquierdo */
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 767px) {
+    .woocommerce-account nav.woocommerce-MyAccount-navigation ul li a {
+        width: 50%; /* Ancho automático en dispositivos móviles */
+    }
+}
+
+.reputation-stats {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.reputation-stats p {
+    margin: 5px 0;
+}
+
+  
+  
   
   
   
