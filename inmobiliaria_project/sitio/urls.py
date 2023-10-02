@@ -5,6 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
 
 #URLS de la app
 urlpatterns = [
@@ -25,6 +26,12 @@ urlpatterns = [
     path('favoritos/', views.MisFavoritosView, name='ver_favoritos'),
     path('toggle_favorito/<int:pk>/', views.FavoritosView, name='toggle_favorito'),
     path('ver_perfil/<int:user_id>/', views.VerPerfilView, name='ver_perfil'),
+
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),),
+
+    path('rebuild_index/', views.rebuild_index),
+
+    path('search/', include('haystack.urls'), name='search'),
 
 #URLS de la aplicacion de restaurar password
     path('reset_password/', views.CustomPasswordResetView.as_view(), name='password_reset'),

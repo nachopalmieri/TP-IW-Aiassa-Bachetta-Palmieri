@@ -67,6 +67,73 @@
         </div>
         {{ property_map|safe}}
         <br>
+        <br>
+        <h3 class="titlebar"> Características </h3>
+        <hr>
+        <ul id="section_1" class="property-features ">
+          <li>
+              <p>
+                  Cant. Ambientes:
+                  <strong>
+                      {{ object.ambientes }}
+                  </strong>
+              </p>
+          </li>
+          <li>
+              <p>
+                  Cant. Dormitorios:
+                  <strong>
+                      {{ object.habitaciones }}
+                  </strong>
+              </p>
+          </li>
+          <li>
+              <p>
+                  Cant. Baños:
+                  <strong>
+                      {{ object.banios }}
+                  </strong>
+              </p>
+          </li>
+          <li>
+              <p>
+                  Metros cuadrados:
+                  <strong>
+                      {{ object.metros_cuadrados}}
+                  </strong>
+              </p>
+          </li>
+          <li>
+              <p>
+                  Expensas:
+                  <strong>
+                      {{ object.expensas}}
+                  </strong>
+              </p>
+          </li>
+        </ul>
+        <br>
+        <h3 class="titlebar"> Datos básicos </h3>
+        <hr>
+        <ul id="section_1" class="property-features ">
+          <li>
+              <p>
+                  Tipo de operación:
+                  <strong>
+                      {{ object.tipo_operacion }}
+                  </strong>
+              </p>
+          </li>
+          <li>
+              <p>
+                  Precio:
+                  <strong>
+                      {{ object.precio }}
+                  </strong>
+              </p>
+          </li>
+        </ul>
+        <br>
         <div class="botones-container">
           <div class="favorito-button">
             {% if object in request.user.profile.favoritos.all %}

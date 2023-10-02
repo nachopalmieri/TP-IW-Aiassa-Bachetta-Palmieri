@@ -1,0 +1,11 @@
+{{ object.titulo }}
+{{ object.descripcion}}
+{{ object.tipo_operacion}}
+{{ object.tipo_propiedad}}
+{{ object.id }}
+{{ object.ciudad }}
+{{ object.provincia }}
+{{ object.fecha_creacion}}
+{{ object.autor }}
+{{ object.precio }}
+{{ object.expensas}}

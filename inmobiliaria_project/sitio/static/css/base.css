@@ -156,7 +156,7 @@ a{
 
 .container {
     margin: 20px auto;
-    max-width: 800px; /* Ajusta el ancho máximo según tus preferencias */
+    max-width: 1000px; /* Ajusta el ancho máximo según tus preferencias */
 }
 
 .article-img {
@@ -365,7 +365,7 @@ a{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 430px;
+    max-width: 100%;
     transition: var(--transition);
 }
 
@@ -456,7 +456,47 @@ a{
     object-fit: cover; /* La imagen se ajusta proporcionalmente y cubre el contenedor */
   }
   
+/* Estilos para la página de resultados de búsqueda */
+.search-results {
+    background-color: #ffffff; /* Cambia el color de fondo a blanco o el que prefieras */
+    padding: 20px; /* Agrega espacio alrededor del contenido */
+    border: 1px solid #ddd; /* Agrega un borde */
+}
 
+.custom-green-button{
+    background-color: var(--green);
+    color: #000000;
+}
+.btn-divider {
+    display: inline-block;
+    border-right: 1px solid #000000; /* Estilo de la línea vertical */
+    padding-right: 5px; /* Espacio entre la línea y el botón */
+    margin-right: 10px; /* Espacio entre la línea y el botón */
+    height: 31px;
+    vertical-align: middle;
+  }
+.heart-symbol::before {
+    content: "\2665"; /* Carácter Unicode para el corazón */
+    color: red; /* Color del corazón */
+    margin-right: 5px; /* Espacio a la derecha del corazón */
+  }
+
+  .property-features{
+    color: #3b4043;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    list-style: none;
+    padding-left: 0;
+    columns: 3;
+    margin: 16px 0;
+    overflow: hidden;
+    opacity: 1;
+    transition: all .3s ease;
+  }
 
   
   

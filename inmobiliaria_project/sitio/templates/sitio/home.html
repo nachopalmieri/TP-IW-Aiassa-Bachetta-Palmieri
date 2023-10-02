@@ -5,8 +5,14 @@
 
 <div class="form-container-search">
   <form method="get">
-    <input type="text" name="q" placeholder="Buscar...">
-    <button type="submit">Buscar</button>
+    {% comment %} <input type="text" name="q" placeholder="Buscar..."> {% endcomment %}
+    <a class="btn btn-success btn-sm custom-green-button" href="/search">Buscar propiedad</a>
+    <span class="btn-divider"></span>
+    <a href="{% url 'ver_favoritos' %}" style="text-decoration: none;">
+      <i class="far fa-heart heart-icon"></i> Favoritos
+    </a>
+    <br>
+    <br>
     <div class="filter-select">
     <label for="tipo_operacion" class="sr-only">Tipo de operación:</label>
       <select name="tipo_operacion" id="tipo_operacion" class="filter-select" onchange="this.form.submit()">
@@ -118,9 +124,14 @@
           <div class="botones-container">
             <div class="favorito-button">
               {% if publicacion in request.user.profile.favoritos.all %}
-                  <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">Deshacer Favorito</a>
+                  <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=1" class="btn btn-danger btn-sm">
+                    <i class="far fa-heart heart-icon"></i> Deshacer Favorito
+
+                  </a>
               {% else %}
-                  <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">Favorito</a>
+                  <a href="{% url 'toggle_favorito' publicacion.id %}?favorito=0" class="btn btn-primary btn-sm">
+                    <i class="far fa-heart heart-icon"></i> Favorito
+                  </a>
               {% endif %}
             </div>
             <div class="contactar-button">
