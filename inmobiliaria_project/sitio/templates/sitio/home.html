@@ -118,7 +118,7 @@
           <i class="fas fa-bed"></i> {{ publicacion.habitaciones }} dorm.
           <i class="fas fa-door-open"> </i>{{ publicacion.ambientes }} amb.
           <i class="fas fa-square"></i> {{ publicacion.metros_cuadrados }} m²
-          <i class="fas fa-toilet"></i> {{ publicacion.banios }} baño
+          <i class="fas fa-toilet"></i> {{ publicacion.banios }} {% if publicacion.banios > 1 %}baños{% else %}baño{% endif %}
           <br>
           <br>
           <div class="botones-container">

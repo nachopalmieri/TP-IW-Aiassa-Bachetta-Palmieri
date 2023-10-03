@@ -10,7 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 from .models import *
-from .forms import UserRegisterForm, InicioSesionForm, ProfileUpdateForm, UserUpdateForm, ReviewForm
+from .forms import UserRegisterForm, InicioSesionForm, ProfileUpdateForm, UserUpdateForm, ReviewForm, PublicacionForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC, EmailAddress
 from allauth.account.utils import send_email_confirmation
@@ -196,8 +196,8 @@ class PublicacionDetailView(DetailView):
 @method_decorator(verified_email_required, name='dispatch')
 class PublicacionCreateView(LoginRequiredMixin, CreateView):
     model = Publicacion
-    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio', 'expensas', 'habitaciones',
-              'metros_cuadrados','ambientes','banios','provincia','ciudad','latitud','longitud','direccion','imagen_principal','image2','image3','image4']
+    form_class = PublicacionForm
+    template_name = 'sitio/publicacion_form.html'
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
@@ -208,8 +208,7 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
 @method_decorator(verified_email_required, name='dispatch')
 class PublicacionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Publicacion
-    fields = ['titulo','descripcion','tipo_propiedad','tipo_operacion','precio', 'expensas', 'habitaciones',
-              'metros_cuadrados','ambientes','banios','provincia','ciudad','latitud','longitud','direccion','imagen_principal','image2','image3','image4']
+    form_class = PublicacionForm
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
