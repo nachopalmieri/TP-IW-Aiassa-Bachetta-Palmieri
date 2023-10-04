@@ -547,6 +547,34 @@ a{
     margin: 5px 0;
 }
 
+.ubicacion-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.ubicacion-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+#buscar-ubicacion {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--green);
+}
+
+#map {
+    height: 400px;
+}
+
+
   
   
   

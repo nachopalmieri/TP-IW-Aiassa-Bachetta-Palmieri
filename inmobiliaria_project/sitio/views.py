@@ -182,6 +182,9 @@ class PublicacionDetailView(DetailView):
         latitud = self.object.latitud if self.object.latitud else -38.416097
         longitud = self.object.longitud if self.object.longitud else -63.616672
 
+        context['latitud'] = latitud
+        context['longitud'] = longitud
+
         # Crea el mapa centrado en la ubicación de la propiedad
         property_map = folium.Map(location=[latitud, longitud], zoom_start=15)
         folium.Marker([latitud, longitud], popup='Ubicación de la propiedad').add_to(property_map)
@@ -202,6 +205,9 @@ class PublicacionCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.autor = self.request.user
         form.instance.estado = 'pendiente'
+        # Actualizar las coordenadas de latitud y longitud con los valores del formulario
+        form.instance.latitud = form.cleaned_data['latitud']
+        form.instance.longitud = form.cleaned_data['longitud']
         return super().form_valid(form)
     
 #Editar publicaciones

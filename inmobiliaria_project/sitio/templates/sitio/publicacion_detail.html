@@ -65,7 +65,14 @@
         <div>
           <p class="titlebar"> {{ object.direccion }},{{ object.ciudad }}, {{ object.provincia }} </p>
         </div>
-        {{ property_map|safe}}
+        <div id="map" style="height: 300px;"></div>
+        <script>
+            var map = L.map('map').setView([{{ latitud }}, {{ longitud }}], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            L.marker([{{ latitud }}, {{ longitud }}]).addTo(map);
+        </script>
         <br>
         <br>
         <h3 class="titlebar"> Características </h3>

@@ -1,19 +1,72 @@
-{% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% include "alerts.html" %}
 {% block content %}
 {% include "nav.html" %}
-    <div class="content-section">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Crear nuevo aviso</legend>
-                {{ form|crispy }}       
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Publicar</button>
-                <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancelar</a>
-            </div>
-        </form>
-    </div>
+<div class="content-section">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Crear nuevo aviso</legend>
+            {{ form|crispy }}
+            <!-- Botón o enlace para buscar la ubicación automáticamente -->
+            <button type="button" id="buscar-ubicacion">Buscar Ubicación</button>
+
+            <br>
+            <br>
+
+            <div id="map" style="height: 500px;"></div>
+            <script>
+                var map = L.map('map').setView([-38.416097, -63.616672], 5);
+                var marker = L.marker([-38.416097, -63.616672], { draggable: true }).addTo(map);
+            
+                // Escuchar los eventos de arrastre del marcador para obtener las coordenadas actualizadas
+                marker.on('dragend', function(event) {
+                    var latlng = marker.getLatLng();
+                    document.getElementById('id_latitud').value = latlng.lat;
+                    document.getElementById('id_longitud').value = latlng.lng;
+                });
+            
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+            
+                // Manejar la búsqueda de ubicación automática
+                document.getElementById('buscar-ubicacion').addEventListener('click', function() {
+                    var direccion = document.getElementById('id_direccion').value;
+                    var provincia = document.getElementById('id_provincia').value;
+                    var ciudad = document.getElementById('id_ciudad').value;
+                    
+                    // Construir la consulta de geocodificación
+                    var query = direccion + ', ' + ciudad + ', ' + provincia;
+            
+                    // Realizar la solicitud de geocodificación a Nominatim
+                    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + query)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length > 0) {
+                                var latlng = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+                                marker.setLatLng(latlng);
+                                map.setView(latlng);
+                                document.getElementById('id_latitud').value = latlng[0];
+                                document.getElementById('id_longitud').value = latlng[1];
+                            } else {
+                                alert('No se pudo encontrar la ubicación. Verifique la dirección, provincia y ciudad ingresadas.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error en la geocodificación:', error);
+                            alert('Ocurrió un error al buscar la ubicación.');
+                        });
+                });
+            </script>            
+        </fieldset>
+        <br>
+        <br>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Publicar</button>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
 {% endblock content %}
+

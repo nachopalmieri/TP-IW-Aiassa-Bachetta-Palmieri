@@ -33,7 +33,15 @@ class PublicacionForm(forms.ModelForm):
     class Meta:
         model = Publicacion
         fields = ['titulo', 'descripcion', 'tipo_propiedad', 'tipo_operacion', 'precio', 'expensas', 'habitaciones',
-                  'metros_cuadrados', 'ambientes', 'banios', 'provincia', 'ciudad', 'latitud', 'longitud', 'direccion',
-                  'imagen_principal', 'image2', 'image3', 'image4']
+                  'metros_cuadrados', 'ambientes', 'banios', 'imagen_principal', 'image2', 'image3', 'image4', 'latitud', 'longitud', 'provincia', 'ciudad', 'direccion']
+        
+        provincia = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Provincia'}))
+        ciudad = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Ciudad'}))
+        direccion = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Dirección'}))
+    
+        widgets = {
+            'latitud': forms.HiddenInput(),
+            'longitud': forms.HiddenInput(),
+        }
         
     banios = forms.IntegerField(label='Baños', initial=1)
