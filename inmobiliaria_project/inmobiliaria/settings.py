@@ -98,12 +98,21 @@ WSGI_APPLICATION = 'inmobiliaria.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DOCKER = os.getenv('DOCKER')
+if not DOCKER:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / '..' / '..' / 'data' / 'db.sqlite3',
+        }
+    }
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -147,7 +156,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -161,8 +171,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 6 #Dejar este para el deploy
-#SITE_ID = 2 #Cambiar a este cuando estemos en local
+#SITE_ID = 6 #Dejar este para el deploy
+SITE_ID = 2 #Cambiar a este cuando estemos en local
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'logout'
 LOGIN_URL = 'login'
