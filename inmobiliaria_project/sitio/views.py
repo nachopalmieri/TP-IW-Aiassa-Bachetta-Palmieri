@@ -335,7 +335,7 @@ def VerPerfilView(request, user_id):
     template_name = 'ver_perfil.html'
     perfil_usuario = get_object_or_404(Profile, user__id=user_id)
     publicaciones = Publicacion.objects.filter(autor=perfil_usuario.user)
-    reviews = Review.objects.filter(reviewer=request.user).order_by('-fecha_creacion')
+    reviews = Review.objects.filter(reviewed_user=perfil_usuario.user).order_by('-fecha_creacion')
 
     if request.method == "POST":
         review_form = ReviewForm(request.POST)
@@ -359,20 +359,20 @@ def VerPerfilView(request, user_id):
 @login_required
 @verified_email_required
 def create_review(request, user_id):
-    user_to_review = get_object_or_404(User, id=user_id)
+    perfil_usuario = get_object_or_404(Profile, user__id=user_id)
     
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.reviewer = request.user
-            review.reviewed_user = user_to_review
+            review.reviewed_user = perfil_usuario.user
             review.save()
-            return redirect('profile', user_id=user_to_review)
+            return redirect('profile', user_id=perfil_usuario)
     else:
         form = ReviewForm()
     
-    return render(request, 'create_review.html', {'form': form, 'user_to_review': user_to_review})
+    return render(request, 'create_review.html', {'form': form, 'user_to_review': perfil_usuario})
 
 def rebuild_index(request):
     from django.core.management import call_command

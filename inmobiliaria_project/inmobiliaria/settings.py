@@ -171,13 +171,29 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-#SITE_ID = 6 #Dejar este para el deploy
-SITE_ID = 2 #Cambiar a este cuando estemos en local
+SITE_ID = 6 #Dejar este para el deploy
+#SITE_ID = 2 #Cambiar a este cuando estemos en local
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'logout'
 LOGIN_URL = 'login'
 
-#ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email'
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+#SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+#SOCIALACCOUNT_QUERY_EMAIL = True
+#SOCIALACCOUNT_EMAIL_REQUIRED = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -193,10 +209,10 @@ EMAIL_HOST_PASSWORD = 'ovvytrqrgadwkpcu'
 #EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 #EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    'profile',
-    'email'
-]
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+#     'profile',
+#     'email'
+# ]
 
 # CLOUDINARY_STORAGE = {
 #     'CLOUD_NAME': 'dghothcvt',
